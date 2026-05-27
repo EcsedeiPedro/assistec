@@ -35,7 +35,7 @@ export function CompanyForm() {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-2">
-      <Input placeholder="Nome da empresa" {...form.register("name")} />
+      <Input className="w-max" placeholder="Nome da empresa" {...form.register("name")} />
 
       <Button type="submit" disabled={loading}>
         Criar

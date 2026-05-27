@@ -7,7 +7,7 @@ export default async function CompaniesPage() {
   const companies = await service.getCompanies();
 
   return (
-    <main className="p-8 space-y-8">
+    <main className="space-y-8">
       <div>
         <h1 className="text-3xl font-bold">Empresas</h1>
       </div>
