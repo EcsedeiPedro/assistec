@@ -1,28 +1,98 @@
+"use client";
+
+import { useState } from "react";
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+import { CompanyRowActions } from "./company-row-actions";
+import { EditCompanyDialog } from "./edit-company-dialog";
+import { DeleteCompanyDialog } from "./delete-company-dialog";
+
+type Company = {
+  id: string;
+  name: string;
+};
+
 type Props = {
-  companies: {
-    id: string;
-    name: string;
-  }[];
+  companies: Company[];
 };
 
 export function CompanyTable({ companies }: Props) {
-  return (
-    <div className="border rounded-md">
-      <table className="w-full">
-        <thead>
-          <tr className="border-b">
-            <th className="text-left p-3">Nome</th>
-          </tr>
-        </thead>
+  const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
 
-        <tbody>
-          {companies.map((company) => (
-            <tr key={company.id} className="border-b">
-              <td className="p-3">{company.name}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+  const [editOpen, setEditOpen] = useState(false);
+
+  const [deleteOpen, setDeleteOpen] = useState(false);
+
+  function handleEdit(company: Company) {
+    setSelectedCompany(company);
+    setEditOpen(true);
+  }
+
+  function handleDelete(company: Company) {
+    setSelectedCompany(company);
+    setDeleteOpen(true);
+  }
+
+  if (!companies.length) {
+    return (
+      <div className="border rounded-md p-8 text-center text-muted-foreground">
+        Nenhuma empresa cadastrada
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <div className="border rounded-md">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Nome</TableHead>
+
+              <TableHead className="w-20" />
+            </TableRow>
+          </TableHeader>
+
+          <TableBody>
+            {companies.map((company) => (
+              <TableRow key={company.id}>
+                <TableCell>{company.name}</TableCell>
+
+                <TableCell>
+                  <CompanyRowActions
+                    onEdit={() => handleEdit(company)}
+                    onDelete={() => handleDelete(company)}
+                  />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      {selectedCompany && (
+        <>
+          <EditCompanyDialog
+            company={selectedCompany}
+            open={editOpen}
+            onOpenChange={setEditOpen}
+          />
+
+          <DeleteCompanyDialog
+            companyId={selectedCompany.id}
+            open={deleteOpen}
+            onOpenChange={setDeleteOpen}
+          />
+        </>
+      )}
+    </>
   );
 }

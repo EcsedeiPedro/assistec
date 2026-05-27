@@ -15,3 +15,22 @@ export async function createCompany(name: string) {
     },
   });
 }
+
+export async function updateCompany(id: string, name: string) {
+  return prisma.company.update({
+    where: {
+      id,
+    },
+    data: {
+      name,
+    },
+  });
+}
+
+export async function deleteCompany(id: string) {
+  return prisma.company.delete({
+    where: {
+      id,
+    },
+  });
+}
