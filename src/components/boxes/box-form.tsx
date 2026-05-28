@@ -35,7 +35,12 @@ export function BoxForm({ companyId }: Props) {
       toast.success("Caixa criada");
 
       form.reset();
-    } catch {
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+        return;
+      }
+
       toast.error("Erro ao criar caixa");
     }
   }

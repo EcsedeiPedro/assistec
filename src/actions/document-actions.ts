@@ -8,7 +8,8 @@ export async function createDocumentAction(
   boxId: string,
   data: {
     name: string;
-    date: string;
+    dateFrom: string;
+    dateTo: string;
     observation?: string;
   },
 ) {
