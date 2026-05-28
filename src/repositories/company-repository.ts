@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 export async function findCompanies() {
   return prisma.company.findMany({
     orderBy: {
-      createdAt: "desc",
+      name: "asc",
     },
   });
 }

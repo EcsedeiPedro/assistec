@@ -3,16 +3,17 @@
 import { useState } from "react";
 
 import { createBoxAction } from "@/actions/box-actions";
-import { BoxSchema } from "@/schemas/box-schema";
 
-export function useBoxFormViewModel(companyId: string) {
+import type { BoxSchema } from "@/schemas/box-schema";
+
+export function useBoxFormViewModel() {
   const [loading, setLoading] = useState(false);
 
   async function submit(data: BoxSchema) {
     try {
       setLoading(true);
 
-      await createBoxAction(companyId, data);
+      await createBoxAction(data);
     } catch (error) {
       throw error;
     } finally {

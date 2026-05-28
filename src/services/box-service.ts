@@ -1,10 +1,10 @@
 import { prisma } from "@/lib/prisma";
 
-import { boxSchema } from "@/schemas/box-schema";
+import { boxSchema, type BoxSchema } from "@/schemas/box-schema";
 
 import * as repository from "@/repositories/box-repository";
 
-export async function createBox(companyId: string, data: unknown) {
+export async function createBox(data: BoxSchema) {
   const parsed = boxSchema.parse(data);
 
   const existingBox = await prisma.box.findUnique({
@@ -17,7 +17,11 @@ export async function createBox(companyId: string, data: unknown) {
     throw new Error("Número da caixa já existe");
   }
 
-  return repository.createBox(companyId, parsed);
+  return repository.createBox(parsed.companyId, parsed);
+}
+
+export async function getAllBoxes() {
+  return repository.findAllBoxes();
 }
 
 export async function getBoxesByCompany(companyId: string) {
