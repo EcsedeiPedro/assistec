@@ -56,7 +56,7 @@ export function CompanyTable({ companies }: Props) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Nome</TableHead>
+              <TableHead className="">Nome</TableHead>
 
               <TableHead className="w-20" />
             </TableRow>
@@ -68,7 +68,7 @@ export function CompanyTable({ companies }: Props) {
                 <TableCell>
                   <Link
                     href={`/companies/${company.id}`}
-                    className="hover:underline"
+                    className="text-blue-700 hover:underline"
                   >
                     {company.name}
                   </Link>
