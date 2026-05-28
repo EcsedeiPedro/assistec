@@ -1,0 +1,29 @@
+import { prisma } from "@/lib/prisma";
+
+export async function createBox(
+  companyId: string,
+  data: {
+    number: number;
+    observation?: string;
+  },
+) {
+  return prisma.box.create({
+    data: {
+      number: data.number,
+      observation: data.observation,
+      companyId,
+    },
+  });
+}
+
+export async function findBoxesByCompany(companyId: string) {
+  return prisma.box.findMany({
+    where: {
+      companyId,
+    },
+
+    orderBy: {
+      number: "asc",
+    },
+  });
+}
