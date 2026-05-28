@@ -32,7 +32,7 @@ export function BoxTable({ boxes }: Props) {
           {boxes.map((box) => (
             <tr key={box.id} className="border-b">
               <td className="p-3">
-                <Link href={`/boxes/${box.id}`} className="hover:underline">
+                <Link className="text-blue-500 hover:underline" href={`/boxes/${box.id}`}>
                   {box.number}
                 </Link>
               </td>
