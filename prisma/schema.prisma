@@ -23,7 +23,7 @@ model Company {
 
 model Box {
   id          String   @id @default(cuid())
-  number      Int
+  number      Int @unique
   observation String?
   createdAt   DateTime @default(now())
 
@@ -38,7 +38,8 @@ model Box {
 model Document {
   id          String   @id @default(cuid())
   name        String
-  date        DateTime
+  dateFrom    DateTime
+  dateTo      DateTime
   observation String?
   createdAt   DateTime @default(now())
 

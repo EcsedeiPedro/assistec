@@ -2,7 +2,8 @@ type Props = {
   documents: {
     id: string;
     name: string;
-    date: Date;
+    dateFrom: Date;
+    dateTo: Date;
     observation: string | null;
   }[];
 };
@@ -23,7 +24,7 @@ export function DocumentTable({ documents }: Props) {
           <tr className="border-b">
             <th className="text-left p-3">Nome</th>
 
-            <th className="text-left p-3">Data</th>
+            <th className="text-left p-3">Período</th>
 
             <th className="text-left p-3">Observação</th>
           </tr>
@@ -35,7 +36,8 @@ export function DocumentTable({ documents }: Props) {
               <td className="p-3">{document.name}</td>
 
               <td className="p-3">
-                {document.date.toLocaleDateString("pt-BR")}
+                {document.dateFrom.toLocaleDateString("pt-BR")} a{" "}
+                {document.dateTo.toLocaleDateString("pt-BR")}
               </td>
 
               <td className="p-3">{document.observation || "-"}</td>

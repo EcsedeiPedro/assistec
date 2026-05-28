@@ -25,7 +25,8 @@ export function DocumentForm({ boxId }: Props) {
 
     defaultValues: {
       name: "",
-      date: "",
+      dateFrom: "",
+      dateTo: "",
       observation: "",
     },
   });
@@ -49,7 +50,9 @@ export function DocumentForm({ boxId }: Props) {
     >
       <Input placeholder="Nome" {...form.register("name")} />
 
-      <Input type="date" {...form.register("date")} />
+      <Input type="date" {...form.register("dateFrom")} />
+
+      <Input type="date" {...form.register("dateTo")} />
 
       <Input placeholder="Observação" {...form.register("observation")} />
 
