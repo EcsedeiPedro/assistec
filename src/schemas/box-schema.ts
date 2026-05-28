@@ -5,6 +5,8 @@ export const boxSchema = z.object({
     .number()
     .min(1),
 
+  companyId: z.string(),
+
   observation: z.string().optional(),
 })
 

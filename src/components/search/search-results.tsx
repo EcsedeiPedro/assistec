@@ -2,7 +2,8 @@ type Props = {
   documents: {
     id: string;
     name: string;
-    date: Date;
+    dateFrom: Date;
+    dateTo: Date;
     observation: string | null;
 
     box: {
@@ -35,7 +36,7 @@ export function SearchResults({ documents }: Props) {
 
             <th className="text-left p-3">Caixa</th>
 
-            <th className="text-left p-3">Data</th>
+            <th className="text-left p-3">Período</th>
           </tr>
         </thead>
 
@@ -49,7 +50,8 @@ export function SearchResults({ documents }: Props) {
               <td className="p-3">{document.box.number}</td>
 
               <td className="p-3">
-                {document.date.toLocaleDateString("pt-BR")}
+                {document.dateFrom.toLocaleDateString("pt-BR")} -{" "}
+                {document.dateTo.toLocaleDateString("pt-BR")}
               </td>
             </tr>
           ))}

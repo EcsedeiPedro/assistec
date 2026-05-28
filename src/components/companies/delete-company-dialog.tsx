@@ -2,7 +2,6 @@
 
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogFooter,
@@ -13,6 +12,7 @@ import {
 import { deleteCompanyAction } from "@/actions/company-actions";
 
 import { toast } from "sonner";
+import { Button } from "../ui/button";
 
 type Props = {
   companyId: string;
@@ -26,8 +26,16 @@ export function DeleteCompanyDialog({ companyId, open, onOpenChange }: Props) {
       await deleteCompanyAction(companyId);
 
       toast.success("Empresa removida");
-    } catch {
-      toast.error("Erro ao remover");
+      onOpenChange(false);
+    } catch (err) {
+      if (err instanceof Error && err.message === "COMPANY_HAS_BOXES") {
+        toast.error(
+          "Não é possível excluir: existem caixas associadas a essa empresa",
+        );
+        return;
+      }
+
+      toast.error("Erro ao remover empresa");
     }
   }
 
@@ -41,7 +49,9 @@ export function DeleteCompanyDialog({ companyId, open, onOpenChange }: Props) {
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
 
-          <AlertDialogAction onClick={handleDelete}>Excluir</AlertDialogAction>
+          <Button variant="destructive" onClick={handleDelete}>
+            Excluir
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

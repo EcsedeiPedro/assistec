@@ -4,8 +4,8 @@ import { prisma } from "@/lib/prisma";
 
 import * as service from "@/services/box-service";
 
-import { BoxForm } from "@/components/boxes/box-form";
 import { BoxTable } from "@/components/boxes/box-table";
+import { BoxCreateModal } from "@/components/boxes/box-create-modal";
 
 type Props = {
   params: Promise<{
@@ -30,13 +30,17 @@ export default async function CompanyPage({ params }: Props) {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold">{company.name}</h1>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">{company.name}</h1>
 
-        <p className="text-muted-foreground">Caixas da empresa</p>
+          <p className="text-muted-foreground">Caixas da empresa</p>
+        </div>
+
+        <BoxCreateModal
+          companyId={company.id}
+        />
       </div>
-
-      <BoxForm companyId={id} />
 
       <BoxTable boxes={boxes} />
     </div>

@@ -6,6 +6,7 @@ import * as service from "@/services/document-service";
 
 import { DocumentForm } from "@/components/documents/document-form";
 import { DocumentTable } from "@/components/documents/document-table";
+import { DocumentCreateModal } from "@/components/documents/document-create-modal";
 
 type Props = {
   params: Promise<{
@@ -33,14 +34,16 @@ export default async function BoxPage({ params }: Props) {
   const documents = await service.getDocumentsByBox(id);
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold">Caixa {box.number}</h1>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Caixa {box.number}</h1>
 
-        <p className="text-muted-foreground">{box.company.name}</p>
+          <p className="text-muted-foreground">{box.company.name}</p>
+        </div>
+
+        <DocumentCreateModal boxId={id} />
       </div>
-
-      <DocumentForm boxId={id} />
 
       <DocumentTable documents={documents} />
     </div>

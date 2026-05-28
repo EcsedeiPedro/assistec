@@ -1,19 +1,12 @@
-'use server'
+"use server";
 
-import { revalidatePath } from 'next/cache'
+import { BoxSchema } from "@/schemas/box-schema";
+import * as service from "@/services/box-service";
 
-import * as service from '@/services/box-service'
+import { revalidatePath } from "next/cache";
 
-export async function createBoxAction(
-  companyId: string,
-  data: {
-    number: number
-    observation?: string
-  }
-) {
-  await service.createBox(companyId, data)
+export async function createBoxAction(data: BoxSchema) {
+  await service.createBox(data);
 
-  revalidatePath(
-    `/companies/${companyId}`
-  )
+  revalidatePath("/boxes");
 }

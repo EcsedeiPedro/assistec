@@ -9,19 +9,25 @@ export async function createCompanyAction(data: { name: string }) {
   revalidatePath("/companies");
 }
 
-export async function updateCompanyAction(
-  id: string,
-  data: {
-    name: string;
-  },
-) {
-  await service.updateCompany(id, data);
+export async function updateCompanyAction(id: string, data: { name: string }) {
+  try {
+    console.log("ACTION HIT:", id, data);
 
-  revalidatePath("/companies");
+    await service.updateCompany(id, data);
+
+    revalidatePath("/companies");
+  } catch (err) {
+    console.error("UPDATE COMPANY ERROR:", err);
+    throw err;
+  }
 }
 
 export async function deleteCompanyAction(id: string) {
-  await service.deleteCompany(id);
+  try {
+    await service.deleteCompany(id);
 
-  revalidatePath("/companies");
+    revalidatePath("/companies");
+  } catch (err) {
+    throw err;
+  }
 }

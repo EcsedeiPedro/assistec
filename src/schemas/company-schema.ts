@@ -1,7 +1,9 @@
 import { z } from "zod";
 
-export const companySchema = z.object({
-  name: z.string().min(1, "Nome da empresa é obrigatório"),
+export const createCompanySchema = z.object({
+  name: z.string().min(1),
 });
 
-export type CompanySchema = z.infer<typeof companySchema>;
+export const updateCompanySchema = z.object({
+  name: z.string().min(1),
+});

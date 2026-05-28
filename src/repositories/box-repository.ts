@@ -16,6 +16,18 @@ export async function createBox(
   });
 }
 
+export async function findAllBoxes() {
+  return prisma.box.findMany({
+    include: {
+      company: true,
+    },
+
+    orderBy: {
+      number: "asc",
+    }
+  });
+}
+
 export async function findBoxesByCompany(companyId: string) {
   return prisma.box.findMany({
     where: {

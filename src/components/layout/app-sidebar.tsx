@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Building2, Search } from "lucide-react";
+import { Boxes, Building2, Search } from "lucide-react";
 
 import {
   Sidebar,
@@ -19,6 +19,11 @@ const items = [
     title: "Empresas",
     url: "/companies",
     icon: Building2,
+  },
+  {
+    title: "Caixas",
+    url: "/boxes",
+    icon: Boxes,
   },
   {
     title: "Busca",
