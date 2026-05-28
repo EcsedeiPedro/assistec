@@ -40,7 +40,7 @@ export default function RootLayout({
       )}
     >
       <body>
-        <Toaster />
+        <Toaster position="top-right" />
 
         <AppShell>{children}</AppShell>
       </body>

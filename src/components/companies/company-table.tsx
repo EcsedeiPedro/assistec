@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 import {
   Table,
@@ -64,7 +65,14 @@ export function CompanyTable({ companies }: Props) {
           <TableBody>
             {companies.map((company) => (
               <TableRow key={company.id}>
-                <TableCell>{company.name}</TableCell>
+                <TableCell>
+                  <Link
+                    href={`/companies/${company.id}`}
+                    className="hover:underline"
+                  >
+                    {company.name}
+                  </Link>
+                </TableCell>
 
                 <TableCell>
                   <CompanyRowActions
