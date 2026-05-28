@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { Building2 } from 'lucide-react'
+import Link from "next/link";
+import { Building2, Search } from "lucide-react";
 
 import {
   Sidebar,
@@ -12,38 +12,41 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@/components/ui/sidebar'
+} from "@/components/ui/sidebar";
 
 const items = [
   {
-    title: 'Empresas',
-    url: '/companies',
+    title: "Empresas",
+    url: "/companies",
     icon: Building2,
   },
-]
+  {
+    title: "Busca",
+    url: "/search",
+    icon: Search,
+  },
+];
 
 export function AppSidebar() {
   return (
     <Sidebar>
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>
-            Assistec
+      <SidebarContent className="bg-neutral-100">
+        <SidebarGroup className="flex flex-col h-full py-0">
+          <SidebarGroupLabel className="flex items-center h-16">
+            <Link className="text-xl font-bold" href="/">
+              Assistec
+            </Link>
           </SidebarGroupLabel>
 
-          <SidebarGroupContent>
-            <SidebarMenu>
+          <SidebarGroupContent className="">
+            <SidebarMenu className="flex flex-col gap-4">
               {items.map((item) => (
-                <SidebarMenuItem
-                  key={item.title}
-                >
+                <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <Link href={item.url}>
                       <item.icon />
 
-                      <span>
-                        {item.title}
-                      </span>
+                      <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -53,5 +56,5 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  )
+  );
 }
