@@ -12,6 +12,7 @@ import { useDocumentFormViewModel } from "@/view-models/use-document-form-view-m
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "../ui/label";
 
 type Props = {
   boxId: string;
@@ -46,15 +47,45 @@ export function DocumentForm({ boxId }: Props) {
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
-      className="grid grid-cols-4 gap-2"
+      className="flex w-full flex-col space-y-4"
     >
-      <Input placeholder="Nome" {...form.register("name")} />
+      <>
+        <Label htmlFor="name">Nome do Documento</Label>
+        <Input
+          id="name"
+          placeholder="Digite o nome do documento"
+          {...form.register("name")}
+        />
+      </>
 
-      <Input type="date" {...form.register("dateFrom")} />
+      <>
+        <Label htmlFor="dateFrom">Data de Início</Label>
+        <Input
+          className="w-max"
+          id="dateFrom"
+          type="date"
+          {...form.register("dateFrom")}
+        />
+      </>
 
-      <Input type="date" {...form.register("dateTo")} />
+      <>
+        <Label htmlFor="dateTo">Data de Término</Label>
+        <Input
+          className="w-max"
+          id="dateTo"
+          type="date"
+          {...form.register("dateTo")}
+        />
+      </>
 
-      <Input placeholder="Observação" {...form.register("observation")} />
+      <>
+        <Label htmlFor="observation">Observação</Label>
+        <Input
+          id="observation"
+          placeholder="Digite uma observação"
+          {...form.register("observation")}
+        />
+      </>
 
       <Button type="submit" disabled={loading}>
         Criar documento

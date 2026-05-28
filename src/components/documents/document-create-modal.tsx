@@ -10,31 +10,29 @@ import {
 
 import { Button } from "@/components/ui/button";
 
-import { BoxForm } from "./box-form";
+import { DocumentForm } from "./document-form";
 import { Plus } from "lucide-react";
 
 type Props = {
-  companyId?: string;
-
-  companies?: {
-    id: string;
-    name: string;
-  }[];
+  boxId: string;
 };
 
-export function BoxCreateModal({ companyId, companies }: Props) {
+export function DocumentCreateModal({ boxId }: Props) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button><Plus />Nova Caixa</Button>
+        <Button>
+          <Plus />
+          Novo Documento
+        </Button>
       </DialogTrigger>
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Criar Caixa</DialogTitle>
+          <DialogTitle>Criar Documento</DialogTitle>
         </DialogHeader>
 
-        <BoxForm companyId={companyId} companies={companies} />
+        <DocumentForm boxId={boxId} />
       </DialogContent>
     </Dialog>
   );

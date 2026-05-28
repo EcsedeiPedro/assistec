@@ -50,6 +50,8 @@ export function CompanyTable({ companies }: Props) {
     );
   }
 
+  console.log(companies.map((c) => c.id));
+
   return (
     <>
       <div className="border rounded-md">
@@ -63,8 +65,8 @@ export function CompanyTable({ companies }: Props) {
           </TableHeader>
 
           <TableBody>
-            {companies.map((company) => (
-              <TableRow key={company.id}>
+            {companies.map((company, index) => (
+              <TableRow key={`${company.id}-${index}`}>
                 <TableCell>
                   <Link
                     href={`/companies/${company.id}`}
@@ -89,12 +91,14 @@ export function CompanyTable({ companies }: Props) {
       {selectedCompany && (
         <>
           <EditCompanyDialog
+            key={`edit-${selectedCompany.id}`}
             company={selectedCompany}
             open={editOpen}
             onOpenChange={setEditOpen}
           />
 
           <DeleteCompanyDialog
+            key={`delete-${selectedCompany.id}`}
             companyId={selectedCompany.id}
             open={deleteOpen}
             onOpenChange={setDeleteOpen}
