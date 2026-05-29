@@ -6,9 +6,8 @@ import { prisma } from "@/lib/prisma";
 import * as service from "@/services/document-service";
 
 import { DocumentTable } from "@/components/documents/document-table";
+import { BoxPageActions } from "@/components/boxes/box-page-actions";
 import { DocumentCreateModal } from "@/components/documents/document-create-modal";
-import { BoxDeleteButton } from "@/components/boxes/box-delete-modal";
-import { BoxEditModal } from "@/components/boxes/box-edit-modal";
 
 type Props = {
   params: Promise<{
@@ -39,7 +38,14 @@ export default async function BoxPage({ params }: Props) {
     <div className="space-y-6">
       <div className="flex items-end justify-between gap-4">
         <div className="space-y-2 w-1/2">
-          <h1 className="text-3xl font-bold">Caixa {box.number}</h1>
+          <div className="flex items-center gap-4">
+            <h1 className="text-3xl font-bold">Caixa {box.number}</h1>
+            <BoxPageActions
+              boxId={id}
+              number={box.number}
+              observation={box.observation}
+            />
+          </div>
 
           <p className="text-sm text-neutral-700 font-semibold">
             Pertence à:
@@ -57,15 +63,7 @@ export default async function BoxPage({ params }: Props) {
           )}
         </div>
 
-        <div className="flex items-center gap-2">
-          <BoxDeleteButton boxId={id} />
-          <BoxEditModal
-            id={id}
-            number={box.number}
-            observation={box.observation}
-          />
-          <DocumentCreateModal boxId={id} />
-        </div>
+        <DocumentCreateModal boxId={id} />
       </div>
 
       <h3 className="text-lg font-semibold">Documentos</h3>

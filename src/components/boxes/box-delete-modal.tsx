@@ -1,8 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
-import { Trash } from "lucide-react";
 import { toast } from "sonner";
 
 import { deleteBoxAction } from "@/actions/box-actions";
@@ -14,22 +11,22 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
 type Props = {
   boxId: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 };
 
-export function BoxDeleteButton({ boxId }: Props) {
-  const [open, setOpen] = useState(false);
+export function BoxDeleteButton({ boxId, open, onOpenChange }: Props) {
 
   async function handleDelete() {
     try {
       await deleteBoxAction(boxId);
 
       toast.success("Caixa removida");
-      setOpen(false);
+      onOpenChange(false);
     } catch (err) {
       if (err instanceof Error && err.message === "BOX_HAS_DOCUMENTS") {
         toast.error(
@@ -43,13 +40,7 @@ export function BoxDeleteButton({ boxId }: Props) {
   }
 
   return (
-    <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <Button variant="destructive">
-          <Trash /> Excluir caixa
-        </Button>
-      </AlertDialogTrigger>
-
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Deseja remover esta caixa?</AlertDialogTitle>
