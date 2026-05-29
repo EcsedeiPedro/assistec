@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { toast } from "sonner";
 
-import { boxSchema, type BoxSchema } from "@/schemas/box-schema";
+import { createBoxSchema, type CreateBoxSchema } from "@/schemas/box-schema";
 
 import { useBoxFormViewModel } from "@/view-models/use-box-form-view-model";
 
@@ -36,8 +36,8 @@ type Props = {
 export function BoxForm({ companyId, companies }: Props) {
   const { loading, submit } = useBoxFormViewModel();
 
-  const form = useForm<BoxSchema>({
-    resolver: zodResolver(boxSchema),
+  const form = useForm<CreateBoxSchema>({
+    resolver: zodResolver(createBoxSchema),
 
     defaultValues: {
       number: 0,
@@ -46,7 +46,7 @@ export function BoxForm({ companyId, companies }: Props) {
     },
   });
 
-  async function onSubmit(data: BoxSchema) {
+  async function onSubmit(data: CreateBoxSchema) {
     try {
       await submit(data);
 

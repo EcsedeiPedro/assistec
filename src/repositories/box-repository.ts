@@ -1,12 +1,7 @@
 import { prisma } from "@/lib/prisma";
+import { CreateBoxSchema, UpdateBoxSchema } from "@/schemas/box-schema";
 
-export async function createBox(
-  companyId: string,
-  data: {
-    number: number;
-    observation?: string;
-  },
-) {
+export async function createBox(companyId: string, data: CreateBoxSchema) {
   return prisma.box.create({
     data: {
       number: data.number,
@@ -48,18 +43,16 @@ export async function deleteBox(id: string) {
   });
 }
 
-export async function updateBox(
-  id: string,
-  number: number,
-  observation?: string,
-) {
+export async function updateBox(id: string, data: UpdateBoxSchema) {
   return prisma.box.update({
     where: {
       id,
     },
+
     data: {
-      number,
-      observation,
+      number: data.number,
+
+      observation: data.observation,
     },
   });
 }

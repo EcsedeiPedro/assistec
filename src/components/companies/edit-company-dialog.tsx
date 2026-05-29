@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { updateCompanyAction } from "@/actions/company-actions";
 
 import { toast } from "sonner";
+import { Label } from "@/components/ui/label";
 
 type Props = {
   company: {
@@ -56,7 +57,17 @@ export function EditCompanyDialog({ company, open, onOpenChange }: Props) {
         </DialogHeader>
 
         <div className="space-y-4">
-          <Input value={name} onChange={(e) => setName(e.target.value)} />
+          <>
+            <Label className="text-neutral-700" htmlFor="name">
+              Nome da empresa
+            </Label>
+            
+            <Input
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </>
 
           <Button onClick={handleSubmit} disabled={loading}>
             Salvar
