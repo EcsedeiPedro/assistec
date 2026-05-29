@@ -1,20 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Pencil } from "lucide-react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { updateBoxAction } from "@/actions/box-actions";
@@ -23,13 +20,32 @@ type Props = {
   id: string;
   number: number;
   observation?: string | null;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 };
 
-export function BoxEditModal({ id, number, observation }: Props) {
-  const [open, setOpen] = useState(false);
+export function BoxEditModal({
+  id,
+  number,
+  observation,
+  open,
+  onOpenChange,
+}: Props) {
   const [boxNumber, setBoxNumber] = useState(number);
   const [boxObservation, setBoxObservation] = useState(observation || "");
   const [loading, setLoading] = useState(false);
+  const wasOpenRef = useRef(false);
+
+  useEffect(() => {
+    const isOpening = open && !wasOpenRef.current;
+
+    if (isOpening) {
+      setBoxNumber(number);
+      setBoxObservation(observation || "");
+    }
+
+    wasOpenRef.current = open;
+  }, [open, number, observation]);
 
   async function handleSubmit() {
     try {
@@ -41,7 +57,7 @@ export function BoxEditModal({ id, number, observation }: Props) {
       });
 
       toast.success("Caixa atualizada");
-      setOpen(false);
+      onOpenChange(false);
     } catch {
       toast.error("Erro ao atualizar a caixa");
     } finally {
@@ -50,13 +66,7 @@ export function BoxEditModal({ id, number, observation }: Props) {
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button className="text-primary-brand font-semibold" variant="outline">
-          <Pencil /> Editar caixa
-        </Button>
-      </DialogTrigger>
-
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Deseja editar esta caixa?</DialogTitle>
@@ -90,9 +100,9 @@ export function BoxEditModal({ id, number, observation }: Props) {
         </div>
 
         <DialogFooter>
-          <DialogClose asChild>
-            <Button variant="outline">Cancelar</Button>
-          </DialogClose>
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
+            Cancelar
+          </Button>
 
           <Button onClick={handleSubmit} disabled={loading}>
             Salvar
