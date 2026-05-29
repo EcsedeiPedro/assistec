@@ -1,12 +1,17 @@
 import { prisma } from "@/lib/prisma";
 
-import { boxSchema, type BoxSchema } from "@/schemas/box-schema";
+import {
+  CreateBoxSchema,
+  createBoxSchema,
+  UpdateBoxSchema,
+  updateBoxSchema,
+} from "@/schemas/box-schema";
 
 import * as repository from "@/repositories/box-repository";
 import { Prisma } from "@prisma/client";
 
-export async function createBox(data: BoxSchema) {
-  const parsed = boxSchema.parse(data);
+export async function createBox(data: CreateBoxSchema) {
+  const parsed = createBoxSchema.parse(data);
 
   const existingBox = await prisma.box.findUnique({
     where: {
@@ -44,7 +49,22 @@ export async function deleteBox(id: string) {
   }
 }
 
-export async function updateBox(id: string, data: BoxSchema) {
-  const parsed = boxSchema.parse(data);
-  return repository.updateBox(id, parsed.number, parsed.observation);
+export async function updateBox(id: string, data: UpdateBoxSchema) {
+  const parsed = updateBoxSchema.parse(data);
+
+  const existingBox = await prisma.box.findFirst({
+    where: {
+      number: parsed.number,
+
+      NOT: {
+        id,
+      },
+    },
+  });
+
+  if (existingBox) {
+    throw new Error("Número da caixa já existe");
+  }
+
+  return repository.updateBox(id, parsed);
 }
