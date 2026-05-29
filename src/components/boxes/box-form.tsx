@@ -64,13 +64,30 @@ export function BoxForm({ companyId, companies }: Props) {
     }
   }
 
+  function onInvalid() {
+    const firstError =
+      form.formState.errors.number?.message ??
+      form.formState.errors.companyId?.message;
+
+    toast.error(firstError ?? "Revise os campos do formulário");
+  }
+
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+    <form
+      onSubmit={form.handleSubmit(onSubmit, onInvalid)}
+      className="space-y-2"
+    >
       {!companyId && companies && (
         <>
-          <Label htmlFor="companyId">Empresa</Label>
+          <Label className="text-xs text-neutral-700" htmlFor="companyId">
+            Empresa *
+          </Label>
 
-          <Select onValueChange={(value) => form.setValue("companyId", value)}>
+          <Select
+            onValueChange={(value) =>
+              form.setValue("companyId", value, { shouldValidate: true })
+            }
+          >
             <SelectTrigger id="companyId">
               <SelectValue placeholder="Empresa" />
             </SelectTrigger>
@@ -86,7 +103,9 @@ export function BoxForm({ companyId, companies }: Props) {
         </>
       )}
 
-      <Label htmlFor="number">Número da caixa</Label>
+      <Label className="text-xs text-neutral-700" htmlFor="number">
+        Número da caixa *
+      </Label>
 
       <Input
         id="number"
@@ -98,7 +117,9 @@ export function BoxForm({ companyId, companies }: Props) {
         })}
       />
 
-      <Label htmlFor="observation">Observação</Label>
+      <Label className="text-xs text-neutral-700" htmlFor="observation">
+        Observação
+      </Label>
 
       <Input
         id="observation"
@@ -106,7 +127,11 @@ export function BoxForm({ companyId, companies }: Props) {
         {...form.register("observation")}
       />
 
-      <Button type="submit" disabled={loading} className="w-full">
+      <Button
+        type="submit"
+        disabled={loading}
+        className="w-full mt-2 cursor-pointer"
+      >
         Criar caixa
       </Button>
     </form>

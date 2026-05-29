@@ -10,3 +10,12 @@ export type BoxWithCompany = {
     name: string;
   };
 };
+
+export type BoxListItem = {
+  id: string;
+  number: number;
+  observation: string | null;
+  company?: {
+    name: string;
+  };
+};

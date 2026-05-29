@@ -42,7 +42,7 @@ export default async function CompanyPage({ params }: Props) {
         />
       </div>
 
-      <BoxTable boxes={boxes} />
+      <BoxTable boxes={boxes} showCompany={false} />
     </div>
   );
 }
