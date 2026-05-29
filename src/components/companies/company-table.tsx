@@ -70,7 +70,7 @@ export function CompanyTable({ companies }: Props) {
                 <TableCell>
                   <Link
                     href={`/companies/${company.id}`}
-                    className="text-blue-700 hover:underline"
+                    className="text-primary-brand font-bold hover:underline"
                   >
                     {company.name}
                   </Link>

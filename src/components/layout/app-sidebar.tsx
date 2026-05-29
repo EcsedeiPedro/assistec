@@ -43,7 +43,7 @@ export function AppSidebar() {
             </Link>
           </SidebarGroupLabel>
 
-          <SidebarGroupContent className="">
+          <SidebarGroupContent>
             <SidebarMenu className="flex flex-col gap-4">
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
@@ -51,7 +51,7 @@ export function AppSidebar() {
                     <Link href={item.url}>
                       <item.icon />
 
-                      <span>{item.title}</span>
+                      <span className="text-primary-brand font-bold! font-bold">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

@@ -24,7 +24,7 @@ export async function findAllBoxes() {
 
     orderBy: {
       number: "asc",
-    }
+    },
   });
 }
 
@@ -36,6 +36,30 @@ export async function findBoxesByCompany(companyId: string) {
 
     orderBy: {
       number: "asc",
+    },
+  });
+}
+
+export async function deleteBox(id: string) {
+  return prisma.box.delete({
+    where: {
+      id,
+    },
+  });
+}
+
+export async function updateBox(
+  id: string,
+  number: number,
+  observation?: string,
+) {
+  return prisma.box.update({
+    where: {
+      id,
+    },
+    data: {
+      number,
+      observation,
     },
   });
 }

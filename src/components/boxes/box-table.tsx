@@ -1,14 +1,15 @@
-import Link from "next/link";
+"use client";
+
+import { BoxCard } from "./box-card";
+import { BoxListItem } from "@/types/box";
 
 type Props = {
-  boxes: {
-    id: string;
-    number: number;
-    observation: string | null;
-  }[];
+  boxes: BoxListItem[];
+
+  showCompany?: boolean;
 };
 
-export function BoxTable({ boxes }: Props) {
+export function BoxTable({ boxes, showCompany = true }: Props) {
   if (!boxes.length) {
     return (
       <div className="border rounded-md p-8 text-center text-muted-foreground">
@@ -18,30 +19,10 @@ export function BoxTable({ boxes }: Props) {
   }
 
   return (
-    <div className="border rounded-md">
-      <table className="w-full">
-        <thead>
-          <tr className="border-b">
-            <th className="text-left p-3">Número</th>
-
-            <th className="text-left p-3">Observação</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {boxes.map((box) => (
-            <tr key={box.id} className="border-b">
-              <td className="p-3">
-                <Link className="text-blue-500 hover:underline" href={`/boxes/${box.id}`}>
-                  {box.number}
-                </Link>
-              </td>
-
-              <td className="p-3">{box.observation || "-"}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      {boxes.map((box) => (
+        <BoxCard key={box.id} box={box} showCompany={showCompany} />
+      ))}
     </div>
   );
 }

@@ -1,12 +1,13 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 
 import { prisma } from "@/lib/prisma";
 
 import * as service from "@/services/document-service";
 
-import { DocumentForm } from "@/components/documents/document-form";
 import { DocumentTable } from "@/components/documents/document-table";
 import { DocumentCreateModal } from "@/components/documents/document-create-modal";
+import { BoxDeleteButton } from "@/components/boxes/box-delete-button";
 
 type Props = {
   params: Promise<{
@@ -39,11 +40,21 @@ export default async function BoxPage({ params }: Props) {
         <div>
           <h1 className="text-3xl font-bold">Caixa {box.number}</h1>
 
-          <p className="text-muted-foreground">{box.company.name}</p>
+          <Link
+            href={`/companies/${box.company.id}`}
+            className="text-primary-brand font-bold"
+          >
+            {box.company.name}
+          </Link>
         </div>
 
-        <DocumentCreateModal boxId={id} />
+        <div className="flex items-center gap-2">
+          <BoxDeleteButton boxId={id} />
+          <DocumentCreateModal boxId={id} />
+        </div>
       </div>
+
+      <h3 className="text-lg font-semibold">Documentos</h3>
 
       <DocumentTable documents={documents} />
     </div>

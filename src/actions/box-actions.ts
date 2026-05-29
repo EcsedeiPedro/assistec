@@ -10,3 +10,15 @@ export async function createBoxAction(data: BoxSchema) {
 
   revalidatePath("/boxes");
 }
+
+export async function deleteBoxAction(id: string) {
+  await service.deleteBox(id);
+
+  revalidatePath("/boxes");
+}
+
+export async function updateBoxAction(id: string, data: BoxSchema) {
+  await service.updateBox(id, data);
+
+  revalidatePath("/boxes");
+}

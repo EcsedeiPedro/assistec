@@ -18,6 +18,7 @@ import { BoxCreateModal } from "./box-create-modal";
 import { BoxWithCompany } from "@/types/box";
 import { BoxCard } from "./box-card";
 import { Company } from "@/types/company";
+import { Label } from "../ui/label";
 
 type Props = {
   boxes: BoxWithCompany[];
@@ -55,18 +56,28 @@ export function BoxesView({ boxes, companies }: Props) {
       </div>
 
       <div className="flex justify-end items-end gap-4">
-        <Input
-          className="w-max"
-          placeholder="Buscar caixa..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <div className="flex flex-col items-start gap-2">
+          <Label className="pl-2 text-xs text-neutral-700" htmlFor="search-box">
+            Pesquisar por caixa
+          </Label>
 
-        <SelectGroup className="p-0">
-          <SelectLabel className="">Filtrar por empresa</SelectLabel>
+          <Input
+            id="search-box"
+            type="number"
+            className="w-max"
+            placeholder="Buscar caixa..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+
+        <SelectGroup className="p-0 flex flex-col gap-2">
+          <Label className="pl-2 text-xs text-neutral-700" htmlFor="company-select">
+            Filtrar por empresa
+          </Label>
 
           <Select value={companyId} onValueChange={setCompanyId}>
-            <SelectTrigger className="w-60">
+            <SelectTrigger id="company-select" className="w-60">
               <SelectValue placeholder="Empresa" />
             </SelectTrigger>
 

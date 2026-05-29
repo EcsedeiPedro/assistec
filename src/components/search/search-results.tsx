@@ -1,3 +1,5 @@
+import Link from "next/dist/client/link";
+
 type Props = {
   documents: {
     id: string;
@@ -7,9 +9,11 @@ type Props = {
     observation: string | null;
 
     box: {
+      id: string;
       number: number;
 
       company: {
+        id: string;
         name: string;
       };
     };
@@ -45,9 +49,23 @@ export function SearchResults({ documents }: Props) {
             <tr key={document.id} className="border-b">
               <td className="p-3">{document.name}</td>
 
-              <td className="p-3">{document.box.company.name}</td>
+              <td className="p-3">
+                <Link
+                  href={`/companies/${document.box.company.id}`}
+                  className="text-primary-brand font-bold hover:underline"
+                >
+                  {document.box.company.name}
+                </Link>
+              </td>
 
-              <td className="p-3">{document.box.number}</td>
+              <td className="p-3">
+                <Link
+                  href={`/boxes/${document.box.id}`}
+                  className="text-primary-brand font-bold hover:underline"
+                >
+                  {document.box.number}
+                </Link>
+              </td>
 
               <td className="p-3">
                 {document.dateFrom.toLocaleDateString("pt-BR")} -{" "}
