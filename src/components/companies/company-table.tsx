@@ -44,27 +44,25 @@ export function CompanyTable({ companies }: Props) {
 
   if (!companies.length) {
     return (
-      <div className="border rounded-md p-8 text-center text-muted-foreground">
+      <div className="border rounded-md p-8 text-center text-gray-dark">
         Nenhuma empresa cadastrada
       </div>
     );
   }
 
-  console.log(companies.map((c) => c.id));
-
   return (
     <>
-      <div className="border rounded-md">
-        <Table>
-          <TableHeader>
+      <div className="border rounded-md overflow-hidden">
+        <Table variant="brand">
+          <TableHeader variant="brand">
             <TableRow>
-              <TableHead className="">Nome</TableHead>
+              <TableHead>Nome</TableHead>
 
               <TableHead className="w-20" />
             </TableRow>
           </TableHeader>
 
-          <TableBody>
+          <TableBody variant="brand">
             {companies.map((company, index) => (
               <TableRow key={`${company.id}-${index}`}>
                 <TableCell>

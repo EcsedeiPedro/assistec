@@ -21,7 +21,7 @@ export function DocumentCreateModal({ boxId }: Props) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>
+        <Button className="bg-green-base text-white hover:bg-green-light focus:bg-green-dark">
           <Plus />
           Novo Documento
         </Button>

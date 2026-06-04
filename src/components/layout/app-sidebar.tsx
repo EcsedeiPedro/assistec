@@ -1,17 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { Boxes, Building2, Search } from "lucide-react";
+import { Box, Building2, Search } from "lucide-react";
 
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarRail,
 } from "@/components/ui/sidebar";
 
 const items = [
@@ -23,7 +23,7 @@ const items = [
   {
     title: "Caixas",
     url: "/boxes",
-    icon: Boxes,
+    icon: Box,
   },
   {
     title: "Busca",
@@ -34,24 +34,23 @@ const items = [
 
 export function AppSidebar() {
   return (
-    <Sidebar>
-      <SidebarContent className="bg-neutral-100">
+    <Sidebar collapsible="icon">
+      <SidebarContent className="bg-green-light">
         <SidebarGroup className="flex flex-col h-full py-0">
-          <SidebarGroupLabel className="flex items-center h-16">
-            <Link className="text-xl font-bold" href="/">
-              Assistec
-            </Link>
-          </SidebarGroupLabel>
-
-          <SidebarGroupContent>
+          <SidebarGroupContent className="mt-4">
             <SidebarMenu className="flex flex-col gap-4">
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <Link href={item.url}>
-                      <item.icon />
+                  <SidebarMenuButton
+                    asChild
+                    className="h-12 justify-start [&_svg]:size-5 [&_svg]:text-white group-data-[collapsible=icon]:justify-center"
+                  >
+                    <Link className="bg-transparent!" href={item.url}>
+                      <item.icon strokeWidth={2.5} />
 
-                      <span className="text-primary-brand font-bold! font-bold">{item.title}</span>
+                      <span className="text-white group-data-[collapsible=icon]:hidden">
+                        {item.title}
+                      </span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -59,6 +58,7 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        <SidebarRail />
       </SidebarContent>
     </Sidebar>
   );

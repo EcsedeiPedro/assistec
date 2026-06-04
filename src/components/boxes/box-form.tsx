@@ -130,7 +130,7 @@ export function BoxForm({ companyId, companies }: Props) {
       <Button
         type="submit"
         disabled={loading}
-        className="w-full mt-2 cursor-pointer"
+        className="w-full mt-2 cursor-pointer bg-green-base text-white hover:bg-green-light focus:bg-green-dark"
       >
         Criar caixa
       </Button>

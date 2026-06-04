@@ -9,10 +9,10 @@ type Props = {
 
 export function AppShell({ children }: Props) {
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={false}>
       <AppSidebar />
 
-      <SidebarInset>
+      <SidebarInset className="bg-gray-light">
         <AppHeader />
 
         <main className="p-6">{children}</main>

@@ -10,18 +10,24 @@ type Props = {
 
 export function BoxCard({ box, showCompany = true }: Props) {
   return (
-    <Link href={`/boxes/${box.id}`}>
-      <div className="border rounded-xl p-4 hover:bg-muted/50 transition cursor-pointer">
+    <Link className="block" href={`/boxes/${box.id}`}>
+      <div className="bg-white border border-gray-300 rounded-xl p-4 shadow-lg transform-gpu translate-y-0 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 ease-out cursor-pointer will-change-transform">
         <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold">Caixa {box.number}</h2>
+          <div className="flex items-center gap-2">
+            <span className="text-xl font-bold text-green-dark">
+              Caixa {box.number}
+            </span>
+
+            {showCompany && <p className="text-sm text-green-dark font-medium">-</p>}
+
+            {showCompany && box.company?.name && (
+              <p className="text-sm text-green-dark font-medium">{box.company.name}</p>
+            )}
           </div>
 
-          {showCompany && box.company?.name && (
-            <p className="text-sm text-muted-foreground">{box.company.name}</p>
+          {box.observation && (
+            <p className="text-sm text-gray-dark">{box.observation}</p>
           )}
-
-          {box.observation && <p className="text-sm">{box.observation}</p>}
         </div>
       </div>
     </Link>

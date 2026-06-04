@@ -49,7 +49,19 @@
 }
 
 @theme {
-  --color-primary-brand: #3f6a3f;
+  /* Verde base e variações */
+  --color-green-light: #6b9b6b;   /* verde claro / hover states */
+  --color-green-base: #3f6a3f;    /* verde principal */
+  --color-green-dark: #2b4a2b;    /* verde escuro / pressed states */
+
+  /* Alias de conveniência */
+  --color-primary-brand: var(--color-green-base);
+
+  /* Neutros quentes (base levemente terrosa) */
+  --color-beige: #f7f2ea;         /* fundo principal das telas */
+  --color-gray-light: #ece8e3;    /* fundo de cards / separadores */
+  --color-gray: #9a9390;          /* textos secundários / ícones */
+  --color-gray-dark: #3c3836;     /* textos primários */
 }
 
 :root {

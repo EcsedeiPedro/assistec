@@ -6,6 +6,7 @@ import * as service from "@/services/box-service";
 
 import { BoxTable } from "@/components/boxes/box-table";
 import { BoxCreateModal } from "@/components/boxes/box-create-modal";
+import { PageContainer } from "@/components/layout/page-container";
 
 type Props = {
   params: Promise<{
@@ -29,20 +30,12 @@ export default async function CompanyPage({ params }: Props) {
   const boxes = await service.getBoxesByCompany(id);
 
   return (
-    <div className="space-y-8">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">{company.name}</h1>
-
-          <p className="text-muted-foreground">Caixas da empresa</p>
-        </div>
-
-        <BoxCreateModal
-          companyId={company.id}
-        />
-      </div>
-
+    <PageContainer
+      title={company.name}
+      description="Caixas da empresa"
+      actions={<BoxCreateModal companyId={company.id} />}
+    >
       <BoxTable boxes={boxes} showCompany={false} />
-    </div>
+    </PageContainer>
   );
 }

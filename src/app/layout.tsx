@@ -26,7 +26,7 @@ export default function RootLayout({
       lang="en"
       className={cn("h-full", "antialiased", "font-sans", poppins.variable)}
     >
-      <body>
+      <body className="">
         <Toaster position="top-right" />
 
         <AppShell>{children}</AppShell>

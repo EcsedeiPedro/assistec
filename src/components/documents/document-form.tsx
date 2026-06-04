@@ -90,7 +90,11 @@ export function DocumentForm({ boxId }: Props) {
         />
       </>
 
-      <Button type="submit" disabled={loading}>
+      <Button
+        className="bg-green-base text-white hover:bg-green-light focus:bg-green-dark"
+        type="submit"
+        disabled={loading}
+      >
         Criar documento
       </Button>
     </form>

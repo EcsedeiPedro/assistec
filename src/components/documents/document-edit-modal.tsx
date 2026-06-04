@@ -133,7 +133,7 @@ export function DocumentEditModal({ boxId, document, open, onOpenChange }: Props
             Cancelar
           </Button>
 
-          <Button onClick={handleSubmit} disabled={loading}>
+          <Button className="bg-green-base text-white hover:bg-green-light focus:bg-green-dark" onClick={handleSubmit} disabled={loading}>
             Salvar
           </Button>
         </DialogFooter>

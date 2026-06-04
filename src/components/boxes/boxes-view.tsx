@@ -18,6 +18,7 @@ import { BoxWithCompany } from "@/types/box";
 import { BoxCard } from "./box-card";
 import { Company } from "@/types/company";
 import { Label } from "../ui/label";
+import { PageContainer } from "@/components/layout/page-container";
 
 type Props = {
   boxes: BoxWithCompany[];
@@ -43,17 +44,12 @@ export function BoxesView({ boxes, companies }: Props) {
   }, [boxes, search, companyId]);
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Caixas</h1>
-
-          <p className="text-muted-foreground">Gerencie as caixas</p>
-        </div>
-
-        <BoxCreateModal companies={companies} />
-      </div>
-
+    <PageContainer
+      className="space-y-6"
+      title="Caixas"
+      description="Gerencie as caixas"
+      actions={<BoxCreateModal companies={companies} />}
+    >
       <div className="flex justify-end items-end gap-4">
         <div className="flex flex-col items-start gap-2">
           <Label className="pl-2 text-xs text-neutral-700" htmlFor="search-box">
@@ -63,7 +59,7 @@ export function BoxesView({ boxes, companies }: Props) {
           <Input
             id="search-box"
             type="number"
-            className="w-max"
+            className="w-max border border-green-base bg-white font-medium text-xs placeholder:text-xs text-green-base placeholder:text-green-base"
             placeholder="Buscar caixa..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -71,16 +67,22 @@ export function BoxesView({ boxes, companies }: Props) {
         </div>
 
         <SelectGroup className="p-0 flex flex-col gap-2">
-          <Label className="pl-2 text-xs text-neutral-700" htmlFor="company-select">
+          <Label
+            className="pl-2 text-xs text-neutral-700"
+            htmlFor="company-select"
+          >
             Filtrar por empresa
           </Label>
 
           <Select value={companyId} onValueChange={setCompanyId}>
-            <SelectTrigger id="company-select" className="w-60">
+            <SelectTrigger
+              id="company-select"
+              className="w-60 border border-green-base bg-white font-medium text-xs placeholder:text-xs text-green-base placeholder:text-green-base"
+            >
               <SelectValue placeholder="Empresa" />
             </SelectTrigger>
 
-            <SelectContent>
+            <SelectContent position="popper">
               <SelectItem value="all">Todas empresas</SelectItem>
 
               {companies.map((company) => (
@@ -98,6 +100,6 @@ export function BoxesView({ boxes, companies }: Props) {
           <BoxCard key={box.id} box={box} />
         ))}
       </div>
-    </div>
+    </PageContainer>
   );
 }

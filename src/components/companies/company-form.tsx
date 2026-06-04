@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CreateCompanyDTO } from "@/types/company";
 import { createCompanySchema } from "@/schemas/company-schema";
+import { Label } from "../ui/label";
 
 export function CompanyForm() {
   const { loading, submit } = useCompanyFormViewModel();
@@ -34,14 +35,24 @@ export function CompanyForm() {
   }
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-2">
-      <Input
-        className="w-max"
-        placeholder="Nome da empresa"
-        {...form.register("name")}
-      />
+    <form
+      onSubmit={form.handleSubmit(onSubmit)}
+      className="flex items-end  gap-2"
+    >
+      <div className="flex flex-col items-start gap-2">
+        <Label htmlFor="name" className="ml-2 text-xs text-neutral-700">
+          Nome da empresa
+        </Label>
 
-      <Button type="submit" disabled={loading}>
+        <Input
+          id="name"
+          className="w-max bg-white placeholder:text-green-base border border-green-base text-green-base font-medium text-xs placeholder:text-xs"
+          placeholder="Nome da empresa"
+          {...form.register("name")}
+        />
+      </div>
+
+      <Button className="bg-green-base" type="submit" disabled={loading}>
         Criar
       </Button>
     </form>

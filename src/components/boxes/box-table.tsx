@@ -12,7 +12,7 @@ type Props = {
 export function BoxTable({ boxes, showCompany = true }: Props) {
   if (!boxes.length) {
     return (
-      <div className="border rounded-md p-8 text-center text-muted-foreground">
+      <div className="border rounded-md p-8 text-center text-gray-dark">
         Nenhuma caixa cadastrada
       </div>
     );

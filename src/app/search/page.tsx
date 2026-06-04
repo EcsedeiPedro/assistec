@@ -1,6 +1,7 @@
 import { SearchForm } from "@/components/search/search-form";
 
 import { SearchResults } from "@/components/search/search-results";
+import { PageContainer } from "@/components/layout/page-container";
 
 import * as service from "@/services/search-service";
 
@@ -16,18 +17,14 @@ export default async function SearchPage({ searchParams }: Props) {
   const documents = await service.searchDocuments(q);
 
   return (
-    <div className="space-y-8">
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold">Busca</h1>
-
-        <p className="text-muted-foreground">
-          Pesquise documentos, empresas e caixas
-        </p>
-      </div>
+    <PageContainer
+      title="Busca"
+      description="Pesquise documentos, empresas e caixas"
+    >
 
       <SearchForm />
 
       <SearchResults documents={documents} />
-    </div>
+    </PageContainer>
   );
 }

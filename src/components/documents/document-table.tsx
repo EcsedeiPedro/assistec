@@ -1,6 +1,14 @@
 "use client";
 
 import { DocumentPageActions } from "./document-page-actions";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 type Props = {
   documents: {
@@ -22,45 +30,45 @@ export function DocumentTable({ documents }: Props) {
 
   if (!documents.length) {
     return (
-      <div className="border rounded-md p-8 text-center text-muted-foreground">
+      <div className="border rounded-md p-8 text-center text-gray-dark">
         Nenhum documento cadastrado
       </div>
     );
   }
 
   return (
-    <div className="border rounded-md">
-      <table className="w-full">
-        <thead>
-          <tr className="border-b">
-            <th className="text-left p-3">Nome</th>
+    <div className="border rounded-md overflow-hidden">
+      <Table variant="brand">
+        <TableHeader variant="brand">
+          <TableRow>
+            <TableHead className="p-3">Nome</TableHead>
 
-            <th className="text-left p-3">Período</th>
+            <TableHead className="p-3">Período</TableHead>
 
-            <th className="text-left p-3">Observação</th>
+            <TableHead className="p-3">Observação</TableHead>
 
-            <th className="text-left p-3 w-20" />
-          </tr>
-        </thead>
+            <TableHead className="p-3 w-20" />
+          </TableRow>
+        </TableHeader>
 
-        <tbody>
+        <TableBody variant="brand">
           {documents.map((document) => (
-            <tr key={document.id} className="border-b">
-              <td className="p-3">{document.name}</td>
+            <TableRow key={document.id}>
+              <TableCell className="p-3">{document.name}</TableCell>
 
-              <td className="p-3">
+              <TableCell className="p-3">
                 {formatDate(document.dateFrom)} a {formatDate(document.dateTo)}
-              </td>
+              </TableCell>
 
-              <td className="p-3">{document.observation || "-"}</td>
+              <TableCell className="p-3">{document.observation || "-"}</TableCell>
 
-              <td>
+              <TableCell className="p-3">
                 {boxId && <DocumentPageActions boxId={boxId} document={document} />}
-              </td>
-            </tr>
+              </TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   );
 }

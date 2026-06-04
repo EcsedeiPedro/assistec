@@ -20,12 +20,16 @@ export function SearchForm() {
   return (
     <div className="flex gap-2">
       <Input
+        className="w-max bg-white border border-green-base font-medium text-xs placeholder:text-xs text-green-base placeholder:text-green-base"
         placeholder="Buscar documentos..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
 
-      <Button onClick={handleSearch}>
+      <Button
+        onClick={handleSearch}
+        className="bg-green-base text-white font-medium text-xs hover:bg-green-light focus:bg-green-light"
+      >
         <Search />
       </Button>
     </div>

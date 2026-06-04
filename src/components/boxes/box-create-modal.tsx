@@ -26,7 +26,10 @@ export function BoxCreateModal({ companyId, companies }: Props) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button><Plus />Nova Caixa</Button>
+        <Button className="bg-green-base text-white hover:bg-green-light focus:ring-green-light">
+          <Plus />
+          Nova Caixa
+        </Button>
       </DialogTrigger>
 
       <DialogContent>
