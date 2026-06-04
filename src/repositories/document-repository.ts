@@ -1,13 +1,12 @@
 import { prisma } from "@/lib/prisma";
+import {
+  CreateDocumentSchema,
+  UpdateDocumentSchema,
+} from "@/schemas/document-schema";
 
 export async function createDocument(
   boxId: string,
-  data: {
-    name: string;
-    dateFrom: string;
-    dateTo: string;
-    observation?: string;
-  },
+  data: CreateDocumentSchema,
 ) {
   return prisma.document.create({
     data: {
@@ -21,6 +20,26 @@ export async function createDocument(
 
       boxId,
     },
+  });
+}
+
+export async function updateDocument(id: string, data: UpdateDocumentSchema) {
+  return prisma.document.update({
+    where: {
+      id,
+    },
+    data: {
+      name: data.name,
+      dateFrom: new Date(data.dateFrom),
+      dateTo: new Date(data.dateTo),
+      observation: data.observation,
+    },
+  });
+}
+
+export async function deleteDocument(id: string) {
+  return prisma.document.delete({
+    where: { id },
   });
 }
 

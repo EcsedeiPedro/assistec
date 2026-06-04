@@ -4,8 +4,8 @@ type Props = {
   documents: {
     id: string;
     name: string;
-    dateFrom: Date;
-    dateTo: Date;
+    dateFrom: Date | string;
+    dateTo: Date | string;
     observation: string | null;
 
     box: {
@@ -19,6 +19,10 @@ type Props = {
     };
   }[];
 };
+
+function formatDate(value: Date | string) {
+  return new Date(value).toLocaleDateString("pt-BR", { timeZone: "UTC" });
+}
 
 export function SearchResults({ documents }: Props) {
   if (!documents.length) {
@@ -68,8 +72,7 @@ export function SearchResults({ documents }: Props) {
               </td>
 
               <td className="p-3">
-                {document.dateFrom.toLocaleDateString("pt-BR")} -{" "}
-                {document.dateTo.toLocaleDateString("pt-BR")}
+                {formatDate(document.dateFrom)} - {formatDate(document.dateTo)}
               </td>
             </tr>
           ))}

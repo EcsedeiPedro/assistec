@@ -4,7 +4,6 @@ import { useState } from "react";
 
 import { BoxEditModal } from "@/components/boxes/box-edit-modal";
 import { BoxDeleteButton } from "@/components/boxes/box-delete-modal";
-import { DocumentCreateModal } from "@/components/documents/document-create-modal";
 
 import { BoxRowActions } from "./box-row-actions";
 

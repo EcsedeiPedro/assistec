@@ -6,7 +6,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { toast } from "sonner";
 
-import { documentSchema, type DocumentSchema } from "@/schemas/document-schema";
+import {
+  createDocumentSchema,
+  type CreateDocumentSchema,
+} from "@/schemas/document-schema";
 
 import { useDocumentFormViewModel } from "@/view-models/use-document-form-view-model";
 
@@ -21,8 +24,8 @@ type Props = {
 export function DocumentForm({ boxId }: Props) {
   const { loading, submit } = useDocumentFormViewModel(boxId);
 
-  const form = useForm<DocumentSchema>({
-    resolver: zodResolver(documentSchema),
+  const form = useForm<CreateDocumentSchema>({
+    resolver: zodResolver(createDocumentSchema),
 
     defaultValues: {
       name: "",
@@ -32,7 +35,7 @@ export function DocumentForm({ boxId }: Props) {
     },
   });
 
-  async function onSubmit(data: DocumentSchema) {
+  async function onSubmit(data: CreateDocumentSchema) {
     try {
       await submit(data);
 
