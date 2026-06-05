@@ -23,7 +23,7 @@ model Company {
 
 model Box {
   id          String   @id @default(cuid())
-  number      Int @unique
+  number      Int      @unique
   observation String?
   createdAt   DateTime @default(now())
 
@@ -47,4 +47,46 @@ model Document {
   box   Box    @relation(fields: [boxId], references: [id])
 
   @@index([name])
+}
+
+model AuthorizedUser {
+  id String @id @default(uuid())
+
+  cpf String @unique
+
+  firstName String @map("first_name")
+  lastName  String @map("last_name")
+
+  email String @unique
+
+  active Boolean @default(true)
+
+  isRegistered Boolean @default(false) @map("is_registered")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  profile Profile?
+
+  @@map("authorized_users")
+}
+
+model Profile {
+  id String @id
+
+  authorizedUserId String @unique @map("authorized_user_id")
+
+  authorizedUser AuthorizedUser @relation(fields: [authorizedUserId], references: [id], onDelete: Cascade)
+
+  cpf String @unique
+
+  firstName String @map("first_name")
+  lastName  String @map("last_name")
+
+  email String @unique
+
+  avatarUrl String? @map("avatar_url")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("profiles")
 }
