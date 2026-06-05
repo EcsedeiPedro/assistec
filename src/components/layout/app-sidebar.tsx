@@ -35,7 +35,7 @@ const items = [
 export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
-      <SidebarContent className="bg-green-light">
+      <SidebarContent className="bg-green-light h-full">
         <SidebarGroup className="flex flex-col h-full py-0">
           <SidebarGroupContent className="mt-4">
             <SidebarMenu className="flex flex-col gap-4">

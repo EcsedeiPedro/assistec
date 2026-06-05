@@ -12,7 +12,7 @@ export function AppShell({ children }: Props) {
     <SidebarProvider defaultOpen={false}>
       <AppSidebar />
 
-      <SidebarInset className="bg-gray-light">
+      <SidebarInset className="bg-gray-light min-h-screen">
         <AppHeader />
 
         <main className="p-6">{children}</main>

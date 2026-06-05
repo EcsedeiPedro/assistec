@@ -1,39 +1,52 @@
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { Building2, Box, FileText, Clock } from "lucide-react";
+import { Building2, Box, FileText, Clock, AlertCircle } from "lucide-react";
 import Link from "next/link";
+import { SearchForm } from "@/components/search/search-form";
 
 export default async function HomePage() {
-  const [user, companiesCount, boxesCount, documentsCount, recentBoxes, recentDocuments] =
-    await Promise.all([
-      getCurrentUser(),
-      prisma.company.count(),
-      prisma.box.count(),
-      prisma.document.count(),
-      prisma.box.findMany({
-        take: 5,
-        orderBy: { createdAt: "desc" },
-        include: { company: { select: { id: true, name: true } } },
-      }),
-      prisma.document.findMany({
-        take: 5,
-        orderBy: { createdAt: "desc" },
-        include: {
-          box: {
-            select: {
-              id: true,
-              number: true,
-              company: { select: { id: true, name: true } },
-            },
+  const [
+    user,
+    companiesCount,
+    boxesCount,
+    documentsCount,
+    recentBoxes,
+    recentDocuments,
+    companiesWithoutBoxes,
+  ] = await Promise.all([
+    getCurrentUser(),
+    prisma.company.count(),
+    prisma.box.count(),
+    prisma.document.count(),
+    prisma.box.findMany({
+      take: 5,
+      orderBy: { createdAt: "desc" },
+      include: { company: { select: { id: true, name: true } } },
+    }),
+    prisma.document.findMany({
+      take: 5,
+      orderBy: { createdAt: "desc" },
+      include: {
+        box: {
+          select: {
+            id: true,
+            number: true,
+            company: { select: { id: true, name: true } },
           },
         },
-      }),
-    ]);
+      },
+    }),
+    prisma.company.findMany({
+      where: { boxes: { none: {} } },
+      orderBy: { name: "asc" },
+      select: { id: true, name: true },
+    }),
+  ]);
 
   const stats = [
-    { label: "Empresas", value: companiesCount, icon: Building2, href: "/companies" },
-    { label: "Caixas",   value: boxesCount,     icon: Box,       href: "/boxes"     },
-    { label: "Documentos", value: documentsCount, icon: FileText, href: "/search"   },
+    { label: "Empresas",   value: companiesCount, icon: Building2, href: "/companies" },
+    { label: "Caixas",     value: boxesCount,     icon: Box,       href: "/boxes"     },
+    { label: "Documentos", value: documentsCount, icon: FileText,  href: "/search"    },
   ];
 
   return (
@@ -66,6 +79,12 @@ export default async function HomePage() {
             </div>
           </Link>
         ))}
+      </div>
+
+      {/* Quick search */}
+      <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-light">
+        <p className="mb-3 text-sm font-medium text-green-dark">Buscar documento</p>
+        <SearchForm />
       </div>
 
       {/* Recent activity */}
@@ -152,6 +171,33 @@ export default async function HomePage() {
           )}
         </div>
       </div>
+
+      {/* Companies without boxes */}
+      {companiesWithoutBoxes.length > 0 && (
+        <div className="rounded-2xl bg-white shadow-sm ring-1 ring-amber-200">
+          <div className="flex items-center gap-2 border-b border-amber-100 px-6 py-4">
+            <AlertCircle className="size-4 text-amber-500" strokeWidth={1.5} />
+            <h2 className="font-semibold text-amber-700">
+              Empresas sem caixas cadastradas
+            </h2>
+            <span className="ml-auto rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">
+              {companiesWithoutBoxes.length}
+            </span>
+          </div>
+          <ul className="flex flex-wrap gap-2 p-4">
+            {companiesWithoutBoxes.map((company) => (
+              <li key={company.id}>
+                <Link
+                  href={`/companies/${company.id}`}
+                  className="inline-flex items-center rounded-xl bg-amber-50 px-3 py-1.5 text-sm text-amber-800 ring-1 ring-amber-200 hover:bg-amber-100 transition-colors"
+                >
+                  {company.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
