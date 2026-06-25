@@ -19,6 +19,8 @@ model Company {
   createdAt DateTime @default(now())
 
   boxes Box[]
+
+  documents Document[]
 }
 
 model Box {
@@ -27,24 +29,27 @@ model Box {
   observation String?
   createdAt   DateTime @default(now())
 
-  companyId String
-  company   Company @relation(fields: [companyId], references: [id])
+  companies Company[]
 
   documents Document[]
-
-  @@unique([companyId, number])
 }
 
 model Document {
   id          String   @id @default(cuid())
   name        String
+
   dateFrom    DateTime
   dateTo      DateTime
+
   observation String?
+  
   createdAt   DateTime @default(now())
 
   boxId String
   box   Box    @relation(fields: [boxId], references: [id])
+
+  companyId String
+  company   Company @relation(fields: [companyId], references: [id])
 
   @@index([name])
 }

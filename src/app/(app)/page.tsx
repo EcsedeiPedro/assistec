@@ -21,7 +21,7 @@ export default async function HomePage() {
     prisma.box.findMany({
       take: 5,
       orderBy: { createdAt: "desc" },
-      include: { company: { select: { id: true, name: true } } },
+      include: { companies: { select: { id: true, name: true } } },
     }),
     prisma.document.findMany({
       take: 5,
@@ -31,7 +31,7 @@ export default async function HomePage() {
           select: {
             id: true,
             number: true,
-            company: { select: { id: true, name: true } },
+            companies: { select: { id: true, name: true } },
           },
         },
       },
@@ -117,7 +117,11 @@ export default async function HomePage() {
                       <span className="flex size-8 items-center justify-center rounded-lg bg-green-base/10 text-xs font-bold text-green-base">
                         #{box.number}
                       </span>
-                      <span className="text-sm text-gray-dark">{box.company.name}</span>
+                      {box.companies?.map((company) => (
+                        <span key={company.id} className="text-sm text-gray-dark">
+                          {company.name}
+                        </span>
+                      ))}
                     </div>
                     <span className="text-xs text-gray">
                       {new Date(box.createdAt).toLocaleDateString("pt-BR")}
@@ -158,7 +162,7 @@ export default async function HomePage() {
                         {doc.name}
                       </p>
                       <p className="text-xs text-gray">
-                        Caixa #{doc.box.number} · {doc.box.company.name}
+                        Caixa #{doc.box.number} · {doc.box.companies?.map((company) => company.name).join(", ")}
                       </p>
                     </div>
                     <span className="ml-4 shrink-0 text-xs text-gray">

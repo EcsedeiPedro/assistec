@@ -22,6 +22,12 @@ type Props = {
   document: {
     id: string;
     name: string;
+
+    company: {
+      id: string;
+      name: string;
+    };
+
     dateFrom: Date | string;
     dateTo: Date | string;
     observation: string | null;
@@ -63,6 +69,7 @@ export function DocumentEditModal({ boxId, document, open, onOpenChange }: Props
 
       await editDocumentAction(boxId, document.id, {
         name,
+        companyId: document.company.id,
         dateFrom,
         dateTo,
         observation,

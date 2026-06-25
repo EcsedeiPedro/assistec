@@ -25,7 +25,7 @@ export default async function BoxPage({ params }: Props) {
     },
 
     include: {
-      company: true,
+      companies: true,
     },
   });
 
@@ -34,6 +34,12 @@ export default async function BoxPage({ params }: Props) {
   }
 
   const documents = await service.getDocumentsByBox(id);
+
+  const allCompanies = await prisma.company.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  });
 
   return (
     <PageContainer
@@ -45,21 +51,35 @@ export default async function BoxPage({ params }: Props) {
           boxId={id}
           number={box.number}
           observation={box.observation}
+          companies={box.companies}
+          allCompanies={allCompanies}
         />
       }
-      actions={<DocumentCreateModal boxId={id} />}
+      actions={
+        <DocumentCreateModal
+          boxId={id}
+          companies={box.companies.map((company) => ({
+            id: company.id,
+            name: company.name,
+          }))}
+        />
+      }
     >
       <div className="space-y-2 w-1/2">
-        <p className="text-sm text-neutral-700 font-semibold">
+        <div className="text-sm text-neutral-700 font-semibold">
           Pertence à:
-          <Link
-            href={`/companies/${box.company.id}`}
-            className="text-primary-brand font-bold"
-          >
-            {" "}
-            {box.company.name}
-          </Link>
-        </p>
+          <div className="flex flex-wrap gap-2">
+            {box.companies.map((company) => (
+              <Link
+                key={company.id}
+                href={`/companies/${company.id}`}
+                className="text-primary-brand font-bold"
+              >
+                {company.name}
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
 
       <h3 className="text-lg font-semibold text-green-dark">Documentos</h3>

@@ -15,11 +15,23 @@ import {
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { updateBoxAction } from "@/actions/box-actions";
+import { CompanyMultiSelect } from "../companies/company-multi-select";
 
 type Props = {
   id: string;
   number: number;
   observation?: string | null;
+
+  companies: {
+    id: string;
+    name: string;
+  }[];
+
+  allCompanies: {
+    id: string;
+    name: string;
+  }[];
+
   open: boolean;
   onOpenChange: (open: boolean) => void;
 };
@@ -28,6 +40,8 @@ export function BoxEditModal({
   id,
   number,
   observation,
+  companies,
+  allCompanies,
   open,
   onOpenChange,
 }: Props) {
@@ -36,16 +50,21 @@ export function BoxEditModal({
   const [loading, setLoading] = useState(false);
   const wasOpenRef = useRef(false);
 
+  const [selectedCompanyIds, setSelectedCompanyIds] = useState<string[]>(
+    companies?.map((company) => company.id) ?? [],
+  );
+
   useEffect(() => {
     const isOpening = open && !wasOpenRef.current;
 
     if (isOpening) {
       setBoxNumber(number);
       setBoxObservation(observation || "");
+      setSelectedCompanyIds(companies?.map((company) => company.id) ?? []);
     }
 
     wasOpenRef.current = open;
-  }, [open, number, observation]);
+  }, [open, number, observation, companies]);
 
   async function handleSubmit() {
     try {
@@ -53,6 +72,7 @@ export function BoxEditModal({
 
       await updateBoxAction(id, {
         number: boxNumber,
+        companyIds: selectedCompanyIds,
         observation: boxObservation,
       });
 
@@ -86,6 +106,12 @@ export function BoxEditModal({
             />
           </>
 
+          <CompanyMultiSelect
+            companies={allCompanies}
+            selectedIds={selectedCompanyIds}
+            onChange={setSelectedCompanyIds}
+          />
+
           <>
             <Label className="text-neutral-700" htmlFor="observation">
               Observação
@@ -104,7 +130,11 @@ export function BoxEditModal({
             Cancelar
           </Button>
 
-          <Button className="bg-green-base text-white hover:bg-green-light focus:bg-green-dark" onClick={handleSubmit} disabled={loading}>
+          <Button
+            className="bg-green-base text-white hover:bg-green-light focus:bg-green-dark"
+            onClick={handleSubmit}
+            disabled={loading}
+          >
             Salvar
           </Button>
         </DialogFooter>

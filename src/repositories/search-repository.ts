@@ -26,10 +26,12 @@ export async function searchDocuments(query: string) {
 
         {
           box: {
-            company: {
-              name: {
-                contains: query,
-                mode: "insensitive",
+            companies: {
+              some: {
+                name: {
+                  contains: query,
+                  mode: "insensitive",
+                },
               },
             },
           },
@@ -40,7 +42,7 @@ export async function searchDocuments(query: string) {
     include: {
       box: {
         include: {
-          company: true,
+          companies: true,
         },
       },
     },

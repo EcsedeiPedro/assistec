@@ -14,6 +14,12 @@ type Props = {
   documents: {
     id: string;
     boxId: string;
+
+    company: {
+      id: string;
+      name: string;
+    };
+
     name: string;
     dateFrom: Date | string;
     dateTo: Date | string;
@@ -43,6 +49,8 @@ export function DocumentTable({ documents }: Props) {
           <TableRow>
             <TableHead className="p-3">Nome</TableHead>
 
+            <TableHead className="p-3">Empresa</TableHead>
+
             <TableHead className="p-3">Período</TableHead>
 
             <TableHead className="p-3">Observação</TableHead>
@@ -56,6 +64,8 @@ export function DocumentTable({ documents }: Props) {
             <TableRow key={document.id}>
               <TableCell className="p-3">{document.name}</TableCell>
 
+              <TableCell className="p-3">{document.company.name}</TableCell>
+
               <TableCell className="p-3">
                 {formatDate(document.dateFrom)} a {formatDate(document.dateTo)}
               </TableCell>
@@ -63,7 +73,12 @@ export function DocumentTable({ documents }: Props) {
               <TableCell className="p-3">{document.observation || "-"}</TableCell>
 
               <TableCell className="p-3">
-                {boxId && <DocumentPageActions boxId={boxId} document={document} />}
+                {boxId && (
+                  <DocumentPageActions
+                    boxId={boxId}
+                    document={document}
+                  />
+                )}
               </TableCell>
             </TableRow>
           ))}

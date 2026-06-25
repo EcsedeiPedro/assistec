@@ -10,6 +10,12 @@ type Props = {
   boxId: string;
   document: {
     id: string;
+
+    company: {
+      id: string;
+      name: string;
+    };
+
     name: string;
     dateFrom: Date | string;
     dateTo: Date | string;

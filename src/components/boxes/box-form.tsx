@@ -14,15 +14,8 @@ import { Button } from "@/components/ui/button";
 
 import { Input } from "@/components/ui/input";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
 import { Label } from "@/components/ui/label";
+import { CompanyMultiSelect } from "../companies/company-multi-select";
 
 type Props = {
   companyId?: string;
@@ -42,7 +35,7 @@ export function BoxForm({ companyId, companies }: Props) {
     defaultValues: {
       number: 0,
       observation: "",
-      companyId: companyId ?? "",
+      companyIds: companyId ? [companyId] : [],
     },
   });
 
@@ -67,7 +60,7 @@ export function BoxForm({ companyId, companies }: Props) {
   function onInvalid() {
     const firstError =
       form.formState.errors.number?.message ??
-      form.formState.errors.companyId?.message;
+      form.formState.errors.companyIds?.message;
 
     toast.error(firstError ?? "Revise os campos do formulário");
   }
@@ -78,29 +71,16 @@ export function BoxForm({ companyId, companies }: Props) {
       className="space-y-2"
     >
       {!companyId && companies && (
-        <>
-          <Label className="text-xs text-neutral-700" htmlFor="companyId">
-            Empresa *
-          </Label>
-
-          <Select
-            onValueChange={(value) =>
-              form.setValue("companyId", value, { shouldValidate: true })
-            }
-          >
-            <SelectTrigger id="companyId">
-              <SelectValue placeholder="Empresa" />
-            </SelectTrigger>
-
-            <SelectContent>
-              {companies.map((company) => (
-                <SelectItem key={company.id} value={company.id}>
-                  {company.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </>
+        <CompanyMultiSelect
+          companies={companies}
+          // eslint-disable-next-line react-hooks/incompatible-library
+          selectedIds={form.watch("companyIds")}
+          onChange={(ids) =>
+            form.setValue("companyIds", ids, {
+              shouldValidate: true,
+            })
+          }
+        />
       )}
 
       <Label className="text-xs text-neutral-700" htmlFor="number">

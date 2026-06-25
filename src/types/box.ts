@@ -3,19 +3,18 @@ export type BoxWithCompany = {
   number: number;
   observation: string | null;
 
-  companyId: string;
-
-  company: {
+  companies: {
     id: string;
     name: string;
-  };
+  }[];
 };
 
 export type BoxListItem = {
   id: string;
   number: number;
   observation: string | null;
-  company?: {
+  companies?: {
+    id: string;
     name: string;
-  };
+  }[];
 };

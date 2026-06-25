@@ -9,6 +9,7 @@ export function useDocumentFormViewModel(boxId: string) {
 
   async function submit(data: {
     name: string;
+    companyId: string;
     dateFrom: string;
     dateTo: string;
     observation?: string;

@@ -1,12 +1,14 @@
 import { prisma } from "@/lib/prisma";
 import { CreateBoxSchema, UpdateBoxSchema } from "@/schemas/box-schema";
 
-export async function createBox(companyId: string, data: CreateBoxSchema) {
+export async function createBox(companyIds: string[], data: CreateBoxSchema) {
   return prisma.box.create({
     data: {
       number: data.number,
       observation: data.observation,
-      companyId,
+      companies: {
+        connect: companyIds.map((id) => ({ id })),
+      },
     },
   });
 }
@@ -14,7 +16,7 @@ export async function createBox(companyId: string, data: CreateBoxSchema) {
 export async function findAllBoxes() {
   return prisma.box.findMany({
     include: {
-      company: true,
+      companies: true,
     },
 
     orderBy: {
@@ -26,7 +28,11 @@ export async function findAllBoxes() {
 export async function findBoxesByCompany(companyId: string) {
   return prisma.box.findMany({
     where: {
-      companyId,
+      companies: {
+        some: {
+          id: companyId,
+        },
+      },
     },
 
     orderBy: {
@@ -53,6 +59,10 @@ export async function updateBox(id: string, data: UpdateBoxSchema) {
       number: data.number,
 
       observation: data.observation,
+
+      companies: {
+        set: data.companyIds.map((id) => ({ id })),
+      },
     },
   });
 }

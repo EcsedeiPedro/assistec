@@ -12,6 +12,8 @@ export async function createDocument(
     data: {
       name: data.name,
 
+      companyId: data.companyId,
+
       dateFrom: new Date(data.dateFrom),
 
       dateTo: new Date(data.dateTo),
@@ -30,6 +32,7 @@ export async function updateDocument(id: string, data: UpdateDocumentSchema) {
     },
     data: {
       name: data.name,
+      companyId: data.companyId,
       dateFrom: new Date(data.dateFrom),
       dateTo: new Date(data.dateTo),
       observation: data.observation,
@@ -47,6 +50,15 @@ export async function findDocumentsByBox(boxId: string) {
   return prisma.document.findMany({
     where: {
       boxId,
+    },
+
+    include: {
+      company: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
     },
 
     orderBy: {

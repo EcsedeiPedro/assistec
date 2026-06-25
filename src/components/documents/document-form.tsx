@@ -17,11 +17,23 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "../ui/label";
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 type Props = {
   boxId: string;
+  companies: {
+    id: string;
+    name: string;
+  }[];
 };
 
-export function DocumentForm({ boxId }: Props) {
+export function DocumentForm({ boxId, companies }: Props) {
   const { loading, submit } = useDocumentFormViewModel(boxId);
 
   const form = useForm<CreateDocumentSchema>({
@@ -29,6 +41,7 @@ export function DocumentForm({ boxId }: Props) {
 
     defaultValues: {
       name: "",
+      companyId: "",
       dateFrom: "",
       dateTo: "",
       observation: "",
@@ -47,6 +60,8 @@ export function DocumentForm({ boxId }: Props) {
     }
   }
 
+  
+
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
@@ -59,6 +74,30 @@ export function DocumentForm({ boxId }: Props) {
           placeholder="Digite o nome do documento"
           {...form.register("name")}
         />
+      </>
+
+      <>
+        <Label htmlFor="companyId">Empresa</Label>
+
+        <Select
+          onValueChange={(value) =>
+            form.setValue("companyId", value, {
+              shouldValidate: true,
+            })
+          }
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Selecione a empresa" />
+          </SelectTrigger>
+
+          <SelectContent>
+            {companies.map((company) => (
+              <SelectItem key={company.id} value={company.id}>
+                {company.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </>
 
       <>

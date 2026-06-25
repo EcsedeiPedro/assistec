@@ -15,9 +15,14 @@ import { Plus } from "lucide-react";
 
 type Props = {
   boxId: string;
+
+  companies: {
+    id: string;
+    name: string;
+  }[];
 };
 
-export function DocumentCreateModal({ boxId }: Props) {
+export function DocumentCreateModal({ boxId, companies }: Props) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -32,7 +37,7 @@ export function DocumentCreateModal({ boxId }: Props) {
           <DialogTitle>Criar Documento</DialogTitle>
         </DialogHeader>
 
-        <DocumentForm boxId={boxId} />
+        <DocumentForm boxId={boxId} companies={companies} />
       </DialogContent>
     </Dialog>
   );

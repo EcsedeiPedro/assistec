@@ -20,10 +20,10 @@ type Props = {
       id: string;
       number: number;
 
-      company: {
+      companies: {
         id: string;
         name: string;
-      };
+      }[];
     };
   }[];
 };
@@ -60,22 +60,26 @@ export function SearchResults({ documents }: Props) {
           {documents.map((document) => (
             <TableRow key={document.id}>
               <TableCell className="p-3">
-                
                 <Link
-                    href={`/boxes/${document.box.id}`}
-                    className="text-primary-brand font-bold hover:underline"
-                  >
-                    {document.name}
-                  </Link>
-                </TableCell>
-
-              <TableCell className="p-3">
-                <Link
-                  href={`/companies/${document.box.company.id}`}
+                  href={`/boxes/${document.box.id}`}
                   className="text-primary-brand font-bold hover:underline"
                 >
-                  {document.box.company.name}
+                  {document.name}
                 </Link>
+              </TableCell>
+
+              <TableCell className="p-3">
+                <div className="flex flex-col">
+                  {document.box.companies.map((company) => (
+                    <Link
+                      key={company.id}
+                      href={`/companies/${company.id}`}
+                      className="text-primary-brand font-bold hover:underline"
+                    >
+                      {company.name}
+                    </Link>
+                  ))}
+                </div>
               </TableCell>
 
               <TableCell className="p-3">

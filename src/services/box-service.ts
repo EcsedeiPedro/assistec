@@ -23,7 +23,7 @@ export async function createBox(data: CreateBoxSchema) {
     throw new Error("Número da caixa já existe");
   }
 
-  return repository.createBox(parsed.companyId, parsed);
+  return repository.createBox(parsed.companyIds, parsed);
 }
 
 export async function getAllBoxes() {

@@ -11,9 +11,25 @@ type Props = {
   boxId: string;
   number: number;
   observation?: string | null;
+
+  companies: {
+    id: string;
+    name: string;
+  }[];
+
+  allCompanies: {
+    id: string;
+    name: string;
+  }[];
 };
 
-export function BoxPageActions({ boxId, number, observation }: Props) {
+export function BoxPageActions({
+  boxId,
+  number,
+  observation,
+  companies,
+  allCompanies,
+}: Props) {
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
 
@@ -32,6 +48,8 @@ export function BoxPageActions({ boxId, number, observation }: Props) {
         observation={observation}
         open={editOpen}
         onOpenChange={setEditOpen}
+        companies={companies}
+        allCompanies={allCompanies}
       />
 
       <BoxDeleteButton

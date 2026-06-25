@@ -37,7 +37,7 @@ export function BoxesView({ boxes, companies }: Props) {
         box.observation?.toLowerCase().includes(search.toLowerCase());
 
       const matchesCompany =
-        companyId === "all" ? true : box.companyId === companyId;
+        companyId === "all" ? true : box.companies.some((company) => company.id === companyId);
 
       return matchesSearch && matchesCompany;
     });
