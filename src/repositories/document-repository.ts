@@ -74,7 +74,7 @@ export async function findDocumentsByBox(boxId: string) {
     },
 
     orderBy: {
-      dateFrom: "desc",
+      name: "asc",
     },
   });
 }
