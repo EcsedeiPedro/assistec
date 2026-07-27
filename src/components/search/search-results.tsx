@@ -14,6 +14,7 @@ type Props = {
     name: string;
     dateFrom?: Date | string | null;
     dateTo?: Date | string | null;
+    year?: number | null;
     observation: string | null;
 
     box: {
@@ -96,7 +97,9 @@ export function SearchResults({ documents }: Props) {
               </TableCell>
 
               <TableCell className="p-3">
-                {document.dateFrom || document.dateTo ? (
+                {document.year ? (
+                  document.year
+                ) : document.dateFrom || document.dateTo ? (
                   <>
                     {formatDate(document.dateFrom)} - {formatDate(document.dateTo)}
                   </>

@@ -40,6 +40,7 @@ model Document {
 
   dateFrom    DateTime?
   dateTo      DateTime?
+  year        Int?
 
   observation String?
   

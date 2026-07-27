@@ -23,6 +23,7 @@ type Props = {
     name: string;
     dateFrom?: Date | string | null;
     dateTo?: Date | string | null;
+    year?: number | null;
     observation: string | null;
   }[];
 };
@@ -71,7 +72,9 @@ export function DocumentTable({ documents }: Props) {
               <TableCell className="p-3">{document.company.name}</TableCell>
 
               <TableCell className="p-3">
-                {document.dateFrom || document.dateTo ? (
+                {document.year ? (
+                  `Emissão: ${document.year}`
+                ) : document.dateFrom || document.dateTo ? (
                   <>
                     {formatDate(document.dateFrom)} a {formatDate(document.dateTo)}
                   </>
