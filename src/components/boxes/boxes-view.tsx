@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 
 import { Input } from "@/components/ui/input";
 
@@ -8,9 +8,7 @@ import {
   Select,
   SelectContent,
   SelectGroup,
-  SelectItem,
   SelectTrigger,
-  SelectValue,
 } from "@/components/ui/select";
 
 import { BoxCreateModal } from "./box-create-modal";
@@ -29,6 +27,15 @@ export function BoxesView({ boxes, companies }: Props) {
   const [search, setSearch] = useState("");
 
   const [companyId, setCompanyId] = useState("all");
+  const [companySearch, setCompanySearch] = useState("");
+  const [selectOpen, setSelectOpen] = useState(false);
+  const searchRef = useRef<HTMLInputElement | null>(null);
+  useEffect(() => {
+    if (selectOpen) {
+      // focus input when dropdown opens
+      setTimeout(() => searchRef.current?.focus(), 0);
+    }
+  }, [selectOpen]);
 
   const filteredBoxes = useMemo(() => {
     return boxes.filter((box) => {
@@ -74,22 +81,70 @@ export function BoxesView({ boxes, companies }: Props) {
             Filtrar por empresa
           </Label>
 
-          <Select value={companyId} onValueChange={setCompanyId}>
+          <Select
+            value={companyId}
+            onValueChange={(v) => {
+              setCompanyId(v);
+              setSelectOpen(false);
+              setCompanySearch("");
+            }}
+            open={selectOpen}
+            onOpenChange={setSelectOpen}
+          >
             <SelectTrigger
               id="company-select"
               className="w-60 border border-green-base bg-white font-medium text-xs placeholder:text-xs text-green-base placeholder:text-green-base"
             >
-              <SelectValue placeholder="Empresa" />
+              {companyId === "all"
+                ? "Empresa"
+                : companies.find((c) => c.id === companyId)?.name}
             </SelectTrigger>
+            <SelectContent position="popper" className="w-60">
+              <div className="p-1.5">
+                <input
+                  ref={searchRef}
+                  id="company-search"
+                  type="text"
+                  placeholder="Pesquisar empresa..."
+                  value={companySearch}
+                  onChange={(e) => setCompanySearch(e.target.value)}
+                  onClick={(e) => e.stopPropagation()}
+                  className="h-7 w-full min-w-0 rounded-lg border border-green-base bg-white px-2 py-0.5 text-xs font-medium placeholder:text-xs text-green-base"
+                />
+              </div>
 
-            <SelectContent position="popper">
-              <SelectItem value="all">Todas empresas</SelectItem>
+              <div className="max-h-48 overflow-auto">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCompanyId("all");
+                    setSelectOpen(false);
+                    setCompanySearch("");
+                  }}
+                  className="w-full text-left px-2 py-1 text-xs hover:bg-accent"
+                >
+                  Todas empresas
+                </button>
 
-              {companies.map((company) => (
-                <SelectItem key={company.id} value={company.id}>
-                  {company.name}
-                </SelectItem>
-              ))}
+                {companies
+                  .filter((c) =>
+                    c.name.toLowerCase().includes(companySearch.toLowerCase())
+                  )
+                  .map((company) => (
+                    <button
+                      key={company.id}
+                      type="button"
+                      onClick={() => {
+                        setCompanyId(company.id);
+                        setSelectOpen(false);
+                        setCompanySearch("");
+                      }}
+                      className="w-full text-left px-2 py-1 text-xs hover:bg-accent"
+                    >
+                      {company.name}
+                    </button>
+                  ))}
+              </div>
             </SelectContent>
           </Select>
         </SelectGroup>
