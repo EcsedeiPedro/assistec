@@ -18,8 +18,26 @@ export async function updateCompany(id: string, data: { name: string }) {
   return repository.updateCompany(id, parsed.name);
 }
 
-export async function getCompanies() {
-  return repository.findCompanies();
+export async function getCompanies(page: number = 1) {
+  const pageSize = 20;
+  const skip = (page - 1) * pageSize;
+
+  const [companies, total] = await Promise.all([
+    repository.findCompanies(skip, pageSize),
+    repository.countCompanies(),
+  ]);
+
+  return {
+    companies,
+    total,
+    pageSize,
+    totalPages: Math.ceil(total / pageSize),
+    currentPage: page,
+  };
+}
+
+export async function getCompaniesUnpaginated() {
+  return repository.findCompaniesUnpaginated();
 }
 
 export async function deleteCompany(id: string) {

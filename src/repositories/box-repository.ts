@@ -13,7 +13,22 @@ export async function createBox(companyIds: string[], data: CreateBoxSchema) {
   });
 }
 
-export async function findAllBoxes() {
+export async function findAllBoxes(skip?: number, take?: number) {
+  return prisma.box.findMany({
+    include: {
+      companies: true,
+    },
+
+    orderBy: {
+      number: "asc",
+    },
+
+    skip,
+    take,
+  });
+}
+
+export async function findAllBoxesUnpaginated() {
   return prisma.box.findMany({
     include: {
       companies: true,
@@ -23,6 +38,10 @@ export async function findAllBoxes() {
       number: "asc",
     },
   });
+}
+
+export async function countAllBoxes() {
+  return prisma.box.count();
 }
 
 export async function findBoxesByCompany(companyId: string) {

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 import {
@@ -12,6 +13,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { Pagination } from "@/components/ui/pagination";
 import { CompanyRowActions } from "./company-row-actions";
 import { EditCompanyDialog } from "./edit-company-dialog";
 import { DeleteCompanyDialog } from "./delete-company-dialog";
@@ -22,10 +24,13 @@ type Company = {
 };
 
 type Props = {
-  companies: Company[];
+  allCompanies: Company[];
+  currentPage: number;
 };
 
-export function CompanyTable({ companies }: Props) {
+export function CompanyTable({ allCompanies, currentPage }: Props) {
+  const router = useRouter();
+  const pageSize = 20;
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
 
   const [editOpen, setEditOpen] = useState(false);
@@ -42,7 +47,18 @@ export function CompanyTable({ companies }: Props) {
     setDeleteOpen(true);
   }
 
-  if (!companies.length) {
+  const handlePageChange = (page: number) => {
+    router.push(`?page=${page}`);
+  };
+
+  const totalPages = Math.ceil(allCompanies.length / pageSize);
+
+  const paginatedCompanies = useMemo(() => {
+    const skip = (currentPage - 1) * pageSize;
+    return allCompanies.slice(skip, skip + pageSize);
+  }, [allCompanies, currentPage]);
+
+  if (!allCompanies.length) {
     return (
       <div className="border rounded-md p-8 text-center text-gray-dark">
         Nenhuma empresa cadastrada
@@ -63,7 +79,7 @@ export function CompanyTable({ companies }: Props) {
           </TableHeader>
 
           <TableBody variant="brand">
-            {companies.map((company, index) => (
+            {paginatedCompanies.map((company, index) => (
               <TableRow key={`${company.id}-${index}`}>
                 <TableCell>
                   <Link
@@ -84,6 +100,14 @@ export function CompanyTable({ companies }: Props) {
             ))}
           </TableBody>
         </Table>
+      </div>
+
+      <div className="flex justify-center pt-6">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       </div>
 
       {selectedCompany && (

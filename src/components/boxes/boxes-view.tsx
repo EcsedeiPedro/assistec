@@ -1,8 +1,10 @@
 "use client";
 
 import { useMemo, useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 import { Input } from "@/components/ui/input";
+import { Pagination } from "@/components/ui/pagination";
 
 import {
   Select,
@@ -19,26 +21,29 @@ import { Label } from "../ui/label";
 import { PageContainer } from "@/components/layout/page-container";
 
 type Props = {
-  boxes: BoxWithCompany[];
+  allBoxes: BoxWithCompany[];
   companies: Company[];
+  currentPage: number;
 };
 
-export function BoxesView({ boxes, companies }: Props) {
+export function BoxesView({ allBoxes, companies, currentPage }: Props) {
+  const router = useRouter();
   const [search, setSearch] = useState("");
+  const pageSize = 20;
 
   const [companyId, setCompanyId] = useState("all");
   const [companySearch, setCompanySearch] = useState("");
   const [selectOpen, setSelectOpen] = useState(false);
   const searchRef = useRef<HTMLInputElement | null>(null);
+
   useEffect(() => {
     if (selectOpen) {
-      // focus input when dropdown opens
       setTimeout(() => searchRef.current?.focus(), 0);
     }
   }, [selectOpen]);
 
   const filteredBoxes = useMemo(() => {
-    return boxes.filter((box) => {
+    return allBoxes.filter((box) => {
       const matchesSearch =
         box.number.toString().includes(search) ||
         box.observation?.toLowerCase().includes(search.toLowerCase());
@@ -48,7 +53,18 @@ export function BoxesView({ boxes, companies }: Props) {
 
       return matchesSearch && matchesCompany;
     });
-  }, [boxes, search, companyId]);
+  }, [allBoxes, search, companyId]);
+
+  const totalPages = Math.ceil(filteredBoxes.length / pageSize);
+  
+  const paginatedBoxes = useMemo(() => {
+    const skip = (currentPage - 1) * pageSize;
+    return filteredBoxes.slice(skip, skip + pageSize);
+  }, [filteredBoxes, currentPage]);
+
+  const handlePageChange = (page: number) => {
+    router.push(`?page=${page}`);
+  };
 
   return (
     <PageContainer
@@ -151,9 +167,17 @@ export function BoxesView({ boxes, companies }: Props) {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {filteredBoxes.map((box) => (
+        {paginatedBoxes.map((box) => (
           <BoxCard key={box.id} box={box} />
         ))}
+      </div>
+
+      <div className="flex justify-center pt-6">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       </div>
     </PageContainer>
   );

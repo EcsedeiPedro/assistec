@@ -4,14 +4,21 @@ import { PageContainer } from "@/components/layout/page-container";
 
 import * as service from "@/services/company-service";
 
-export default async function CompaniesPage() {
-  const companies = await service.getCompanies();
+type Props = {
+  searchParams: Promise<{ page?: string }>;
+};
+
+export default async function CompaniesPage({ searchParams }: Props) {
+  const params = await searchParams;
+  const page = parseInt(params.page || "1", 10);
+
+  const allCompanies = await service.getCompaniesUnpaginated();
 
   return (
     <PageContainer title="Empresas" description="Gerencie as empresas">
       <CompanyForm />
 
-      <CompanyTable companies={companies} />
+      <CompanyTable allCompanies={allCompanies} currentPage={page} />
     </PageContainer>
   );
 }

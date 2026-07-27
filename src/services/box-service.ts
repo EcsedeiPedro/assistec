@@ -26,8 +26,26 @@ export async function createBox(data: CreateBoxSchema) {
   return repository.createBox(parsed.companyIds, parsed);
 }
 
-export async function getAllBoxes() {
-  return repository.findAllBoxes();
+export async function getAllBoxes(page: number = 1) {
+  const pageSize = 20;
+  const skip = (page - 1) * pageSize;
+  
+  const [boxes, total] = await Promise.all([
+    repository.findAllBoxes(skip, pageSize),
+    repository.countAllBoxes(),
+  ]);
+
+  return {
+    boxes,
+    total,
+    pageSize,
+    totalPages: Math.ceil(total / pageSize),
+    currentPage: page,
+  };
+}
+
+export async function getAllBoxesUnpaginated() {
+  return repository.findAllBoxesUnpaginated();
 }
 
 export async function getBoxesByCompany(companyId: string) {
