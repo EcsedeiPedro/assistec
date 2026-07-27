@@ -38,10 +38,7 @@ model Document {
   id          String   @id @default(cuid())
   name        String
 
-  dateFrom    DateTime?
-  dateTo      DateTime?
-  year        Int?
-
+  date        String?
   observation String?
   
   createdAt   DateTime @default(now())

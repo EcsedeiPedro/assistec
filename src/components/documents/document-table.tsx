@@ -21,20 +21,10 @@ type Props = {
     };
 
     name: string;
-    dateFrom?: Date | string | null;
-    dateTo?: Date | string | null;
-    year?: number | null;
+    date?: string | null;
     observation: string | null;
   }[];
 };
-
-function formatDate(value?: Date | string | null) {
-  if (!value) {
-    return "-";
-  }
-
-  return new Date(value).toLocaleDateString("pt-BR", { timeZone: "UTC" });
-}
 
 export function DocumentTable({ documents }: Props) {
   const boxId = documents[0]?.boxId;
@@ -71,17 +61,7 @@ export function DocumentTable({ documents }: Props) {
 
               <TableCell className="p-3">{document.company.name}</TableCell>
 
-              <TableCell className="p-3">
-                {document.year ? (
-                  `Emissão: ${document.year}`
-                ) : document.dateFrom || document.dateTo ? (
-                  <>
-                    {formatDate(document.dateFrom)} a {formatDate(document.dateTo)}
-                  </>
-                ) : (
-                  "-"
-                )}
-              </TableCell>
+              <TableCell className="p-3">{document.date || "-"}</TableCell>
 
               <TableCell className="p-3">{document.observation || "-"}</TableCell>
 

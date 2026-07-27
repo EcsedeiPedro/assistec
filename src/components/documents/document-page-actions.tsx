@@ -17,8 +17,7 @@ type Props = {
     };
 
     name: string;
-    dateFrom?: Date | string | null;
-    dateTo?: Date | string | null;
+    date?: string | null;
     observation: string | null;
   };
 };

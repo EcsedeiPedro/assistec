@@ -28,31 +28,16 @@ type Props = {
       name: string;
     };
 
-    dateFrom?: Date | string | null;
-    dateTo?: Date | string | null;
-    year?: number | null;
+    date?: string | null;
     observation: string | null;
   };
   open: boolean;
   onOpenChange: (open: boolean) => void;
 };
 
-function formatDateInput(date?: Date | string | null) {
-  if (!date) {
-    return "";
-  }
-
-  const normalizedDate = date instanceof Date ? date : new Date(date);
-
-  return normalizedDate.toISOString().slice(0, 10);
-}
-
 export function DocumentEditModal({ boxId, document, open, onOpenChange }: Props) {
   const [name, setName] = useState(document.name);
-  const [dateFrom, setDateFrom] = useState(formatDateInput(document.dateFrom));
-  const [dateTo, setDateTo] = useState(formatDateInput(document.dateTo));
-  const [year, setYear] = useState(document.year?.toString() ?? "");
-  const [mode, setMode] = useState<"none" | "date" | "year">("none");
+  const [date, setDate] = useState(document.date ?? "");
   const [observation, setObservation] = useState(document.observation ?? "");
   const [loading, setLoading] = useState(false);
   const wasOpenRef = useRef(false);
@@ -62,46 +47,12 @@ export function DocumentEditModal({ boxId, document, open, onOpenChange }: Props
 
     if (isOpening) {
       setName(document.name);
-      setDateFrom(formatDateInput(document.dateFrom));
-      setDateTo(formatDateInput(document.dateTo));
-      setYear(document.year?.toString() ?? "");
+      setDate(document.date ?? "");
       setObservation(document.observation ?? "");
-
-      /* eslint-disable react-hooks/set-state-in-effect */
-      if (document.year) {
-        setMode("year");
-      } else if (document.dateFrom || document.dateTo) {
-        setMode("date");
-      } else {
-        setMode("none");
-      }
-      /* eslint-enable react-hooks/set-state-in-effect */
     }
 
     wasOpenRef.current = open;
   }, [open, document]);
-
-  function toggleDateMode() {
-    if (mode === "date") {
-      setMode("none");
-      setDateFrom("");
-      setDateTo("");
-    } else {
-      setMode("date");
-      setYear("");
-    }
-  }
-
-  function toggleYearMode() {
-    if (mode === "year") {
-      setMode("none");
-      setYear("");
-    } else {
-      setMode("year");
-      setDateFrom("");
-      setDateTo("");
-    }
-  }
 
   async function handleSubmit() {
     try {
@@ -110,9 +61,7 @@ export function DocumentEditModal({ boxId, document, open, onOpenChange }: Props
       await editDocumentAction(boxId, document.id, {
         name,
         companyId: document.company.id,
-        dateFrom,
-        dateTo,
-        year: year ? Number(year) : undefined,
+        date,
         observation,
       });
 
@@ -143,64 +92,13 @@ export function DocumentEditModal({ boxId, document, open, onOpenChange }: Props
             />
           </>
 
-          <div className="flex items-center gap-6">
-            <label className="flex cursor-pointer items-center gap-2 text-sm">
-              <input
-                type="checkbox"
-                checked={mode === "date"}
-                onChange={toggleDateMode}
-                className="h-4 w-4 rounded border-gray-300 text-green-base focus:ring-green-base"
-              />
-              Data completa
-            </label>
-
-            <label className="flex cursor-pointer items-center gap-2 text-sm">
-              <input
-                type="checkbox"
-                checked={mode === "year"}
-                onChange={toggleYearMode}
-                className="h-4 w-4 rounded border-gray-300 text-green-base focus:ring-green-base"
-              />
-              Ano
-            </label>
-          </div>
-
           <>
-            <Label htmlFor="dateFrom">Data de Início</Label>
+            <Label htmlFor="date">Data</Label>
             <Input
-              className="w-max"
-              id="dateFrom"
-              type="date"
-              value={dateFrom}
-              disabled={mode !== "date"}
-              onChange={(e) => setDateFrom(e.target.value)}
-            />
-          </>
-
-          <>
-            <Label htmlFor="dateTo">Data de Término</Label>
-            <Input
-              className="w-max"
-              id="dateTo"
-              type="date"
-              value={dateTo}
-              disabled={mode !== "date"}
-              onChange={(e) => setDateTo(e.target.value)}
-            />
-          </>
-
-          <>
-            <Label htmlFor="year">Ano</Label>
-            <Input
-              className="w-max"
-              id="year"
-              type="number"
-              placeholder="2026"
-              min={1900}
-              max={2099}
-              value={year}
-              disabled={mode !== "year"}
-              onChange={(e) => setYear(e.target.value)}
+              id="date"
+              placeholder="Digite a data livremente"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
             />
           </>
 

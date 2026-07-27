@@ -48,7 +48,7 @@ export async function searchDocuments(query: string) {
     },
 
     orderBy: {
-      dateFrom: "desc",
+      createdAt: "desc",
     },
   });
 }

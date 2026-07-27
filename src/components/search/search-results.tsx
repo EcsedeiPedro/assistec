@@ -12,9 +12,7 @@ type Props = {
   documents: {
     id: string;
     name: string;
-    dateFrom?: Date | string | null;
-    dateTo?: Date | string | null;
-    year?: number | null;
+    date?: string | null;
     observation: string | null;
 
     box: {
@@ -29,13 +27,6 @@ type Props = {
   }[];
 };
 
-function formatDate(value?: Date | string | null) {
-  if (!value) {
-    return "-";
-  }
-
-  return new Date(value).toLocaleDateString("pt-BR", { timeZone: "UTC" });
-}
 
 export function SearchResults({ documents }: Props) {
   if (!documents.length) {
@@ -96,17 +87,7 @@ export function SearchResults({ documents }: Props) {
                 </Link>
               </TableCell>
 
-              <TableCell className="p-3">
-                {document.year ? (
-                  document.year
-                ) : document.dateFrom || document.dateTo ? (
-                  <>
-                    {formatDate(document.dateFrom)} - {formatDate(document.dateTo)}
-                  </>
-                ) : (
-                  "-"
-                )}
-              </TableCell>
+              <TableCell className="p-3">{document.date || "-"}</TableCell>
             </TableRow>
           ))}
         </TableBody>

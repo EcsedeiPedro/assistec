@@ -14,16 +14,8 @@ export async function createDocument(
     companyId: data.companyId,
     observation: data.observation,
     boxId,
-    year: data.year ?? null,
+    date: data.date ?? null,
   };
-
-  if (data.dateFrom) {
-    documentData.dateFrom = new Date(data.dateFrom);
-  }
-
-  if (data.dateTo) {
-    documentData.dateTo = new Date(data.dateTo);
-  }
 
   return prisma.document.create({
     data: documentData,
@@ -35,20 +27,8 @@ export async function updateDocument(id: string, data: UpdateDocumentSchema) {
     name: data.name,
     companyId: data.companyId,
     observation: data.observation,
-    year: data.year ?? null,
+    date: data.date ?? null,
   };
-
-  if (data.dateFrom) {
-    updateData.dateFrom = new Date(data.dateFrom);
-  } else {
-    updateData.dateFrom = null;
-  }
-
-  if (data.dateTo) {
-    updateData.dateTo = new Date(data.dateTo);
-  } else {
-    updateData.dateTo = null;
-  }
 
   return prisma.document.update({
     where: {
