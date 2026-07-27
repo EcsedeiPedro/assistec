@@ -21,13 +21,17 @@ type Props = {
     };
 
     name: string;
-    dateFrom: Date | string;
-    dateTo: Date | string;
+    dateFrom?: Date | string | null;
+    dateTo?: Date | string | null;
     observation: string | null;
   }[];
 };
 
-function formatDate(value: Date | string) {
+function formatDate(value?: Date | string | null) {
+  if (!value) {
+    return "-";
+  }
+
   return new Date(value).toLocaleDateString("pt-BR", { timeZone: "UTC" });
 }
 
@@ -67,7 +71,13 @@ export function DocumentTable({ documents }: Props) {
               <TableCell className="p-3">{document.company.name}</TableCell>
 
               <TableCell className="p-3">
-                {formatDate(document.dateFrom)} a {formatDate(document.dateTo)}
+                {document.dateFrom || document.dateTo ? (
+                  <>
+                    {formatDate(document.dateFrom)} a {formatDate(document.dateTo)}
+                  </>
+                ) : (
+                  "-"
+                )}
               </TableCell>
 
               <TableCell className="p-3">{document.observation || "-"}</TableCell>

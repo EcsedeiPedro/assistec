@@ -33,10 +33,18 @@ type Props = {
   }[];
 };
 
+type DocumentFormValues = {
+  name: string;
+  companyId: string;
+  dateFrom?: string;
+  dateTo?: string;
+  observation?: string;
+};
+
 export function DocumentForm({ boxId, companies }: Props) {
   const { loading, submit } = useDocumentFormViewModel(boxId);
 
-  const form = useForm<CreateDocumentSchema>({
+  const form = useForm<DocumentFormValues>({
     resolver: zodResolver(createDocumentSchema),
 
     defaultValues: {
@@ -48,9 +56,9 @@ export function DocumentForm({ boxId, companies }: Props) {
     },
   });
 
-  async function onSubmit(data: CreateDocumentSchema) {
+  async function onSubmit(data: DocumentFormValues) {
     try {
-      await submit(data);
+      await submit(data as CreateDocumentSchema);
 
       toast.success("Documento criado");
 
@@ -80,8 +88,9 @@ export function DocumentForm({ boxId, companies }: Props) {
         <Label htmlFor="companyId">Empresa</Label>
 
         <Select
+          value={form.watch("companyId")}
           onValueChange={(value) =>
-            form.setValue("companyId", value, {
+            form.setValue("companyId", value ?? "", {
               shouldValidate: true,
             })
           }

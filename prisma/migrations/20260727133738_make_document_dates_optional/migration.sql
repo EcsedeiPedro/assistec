@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Document" ALTER COLUMN "dateFrom" DROP NOT NULL,
+ALTER COLUMN "dateTo" DROP NOT NULL;

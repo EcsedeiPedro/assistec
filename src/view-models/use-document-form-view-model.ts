@@ -3,17 +3,12 @@
 import { useState } from "react";
 
 import { createDocumentAction } from "@/actions/document-actions";
+import type { CreateDocumentSchema } from "@/schemas/document-schema";
 
 export function useDocumentFormViewModel(boxId: string) {
   const [loading, setLoading] = useState(false);
 
-  async function submit(data: {
-    name: string;
-    companyId: string;
-    dateFrom: string;
-    dateTo: string;
-    observation?: string;
-  }) {
+  async function submit(data: CreateDocumentSchema) {
     try {
       setLoading(true);
 

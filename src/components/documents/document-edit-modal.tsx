@@ -28,15 +28,19 @@ type Props = {
       name: string;
     };
 
-    dateFrom: Date | string;
-    dateTo: Date | string;
+    dateFrom?: Date | string | null;
+    dateTo?: Date | string | null;
     observation: string | null;
   };
   open: boolean;
   onOpenChange: (open: boolean) => void;
 };
 
-function formatDateInput(date: Date | string) {
+function formatDateInput(date?: Date | string | null) {
+  if (!date) {
+    return "";
+  }
+
   const normalizedDate = date instanceof Date ? date : new Date(date);
 
   return normalizedDate.toISOString().slice(0, 10);

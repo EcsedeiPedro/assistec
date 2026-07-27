@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import type { Prisma } from "@prisma/client";
 import {
   CreateDocumentSchema,
   UpdateDocumentSchema,
@@ -8,35 +9,46 @@ export async function createDocument(
   boxId: string,
   data: CreateDocumentSchema,
 ) {
+  const documentData: Prisma.DocumentUncheckedCreateInput = {
+    name: data.name,
+    companyId: data.companyId,
+    observation: data.observation,
+    boxId,
+  };
+
+  if (data.dateFrom) {
+    documentData.dateFrom = new Date(data.dateFrom);
+  }
+
+  if (data.dateTo) {
+    documentData.dateTo = new Date(data.dateTo);
+  }
+
   return prisma.document.create({
-    data: {
-      name: data.name,
-
-      companyId: data.companyId,
-
-      dateFrom: new Date(data.dateFrom),
-
-      dateTo: new Date(data.dateTo),
-
-      observation: data.observation,
-
-      boxId,
-    },
+    data: documentData,
   });
 }
 
 export async function updateDocument(id: string, data: UpdateDocumentSchema) {
+  const updateData: Prisma.DocumentUncheckedUpdateInput = {
+    name: data.name,
+    companyId: data.companyId,
+    observation: data.observation,
+  };
+
+  if (data.dateFrom) {
+    updateData.dateFrom = new Date(data.dateFrom);
+  }
+
+  if (data.dateTo) {
+    updateData.dateTo = new Date(data.dateTo);
+  }
+
   return prisma.document.update({
     where: {
       id,
     },
-    data: {
-      name: data.name,
-      companyId: data.companyId,
-      dateFrom: new Date(data.dateFrom),
-      dateTo: new Date(data.dateTo),
-      observation: data.observation,
-    },
+    data: updateData,
   });
 }
 
